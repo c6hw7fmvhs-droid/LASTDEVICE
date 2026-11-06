@@ -177,6 +177,51 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
   padding:20px 18px calc(42px + var(--safe-bottom));
 }
 
+
+/* Native-inspired Messages interface */
+.messages-screen{margin:-20px -18px -42px;min-height:100%;background:#101116;color:#f5f5f7;padding:0 17px 24px}
+.messages-toolbar{height:46px;display:flex;align-items:center;justify-content:space-between}
+.messages-title{font-size:29px;font-weight:750;letter-spacing:-1px}
+.messages-toolbar button{background:none;border:0;color:#55a5ff;font-size:14px}
+.messages-search{height:34px;border-radius:10px;background:#26282e;display:flex;align-items:center;gap:8px;padding:0 10px;margin:5px 0 9px;color:#9298a3}
+.messages-search span{font-size:19px}
+.messages-search input{width:100%;background:none;border:0;outline:0;color:#f5f5f7;font-size:14px}
+.messages-search input::placeholder{color:#9298a3}
+.conversation-list{display:flex;flex-direction:column}
+.conversation-row{width:100%;min-height:75px;display:flex;align-items:center;gap:12px;padding:10px 0;background:none;border:0;border-bottom:1px solid #303139;text-align:left;color:inherit;position:relative}
+.conversation-avatar{width:49px;height:49px;flex:none;border-radius:50%;background:linear-gradient(145deg,#596273,#303744);display:grid;place-items:center;font-size:17px;font-weight:650;color:#f3f5f8}
+.conversation-copy{min-width:0;flex:1}
+.conversation-topline,.conversation-bottomline{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.conversation-topline strong{font-size:15px;font-weight:650}
+.conversation-topline span{font-size:11px;color:#858a95;white-space:nowrap}
+.conversation-bottomline{margin-top:6px;color:#9297a1;font-size:12px}
+.conversation-bottomline span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conversation-bottomline b{font-size:20px;font-weight:300;color:#646a75}
+.unread-dot{position:absolute;right:1px;top:39px;width:7px;height:7px;border-radius:50%;background:#3194ff}
+.messages-footer{text-align:center;font-size:10px;color:#777d88;padding:18px 0}
+.chat-top{height:66px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2c33;margin:-20px -18px 0;padding:0 14px;background:#17191f}
+.chat-back,.chat-info{background:none;border:0;color:#58a5ff;font-size:25px;width:32px}
+.chat-contact{display:flex;flex-direction:column;align-items:center;gap:2px}
+.chat-avatar{width:29px;height:29px;border-radius:50%;background:linear-gradient(145deg,#697487,#38404c);display:grid;place-items:center;font-size:12px}
+.chat-contact strong{font-size:12px}
+.chat-contact span{font-size:9px;color:#8f96a2}
+.chat-date{text-align:center;color:#8d929c;font-size:10px;margin:20px 0}
+.chat-thread{display:flex;flex-direction:column;gap:4px;padding:0 2px 16px}
+.chat-day{text-align:center;color:#858b96;font-size:10px;margin:13px 0}
+.chat-row{display:flex;flex-direction:column;align-items:flex-start;max-width:86%;margin:3px 0}
+.chat-row.mine{align-self:flex-end;align-items:flex-end}
+.chat-bubble{padding:10px 13px;border-radius:18px;font-size:13px;line-height:1.48;overflow-wrap:anywhere}
+.chat-bubble.incoming{background:#303239;color:#f4f4f6;border-bottom-left-radius:5px}
+.chat-bubble.outgoing{background:#087df1;color:white;border-bottom-right-radius:5px}
+.chat-bubble.deleted{background:transparent;border:1px solid #626875;color:#9ba1ac;font-style:italic}
+.chat-time{font-size:9px;color:#777e89;margin:3px 5px 0}
+.chat-system{text-align:center;color:#8c929d;font-size:10px;margin:13px 0}
+.chat-compose{position:sticky;bottom:-20px;margin:12px -18px -20px;padding:12px 14px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:9px;background:#17191f;border-top:1px solid #2a2c33}
+.compose-plus{width:29px;height:29px;border-radius:50%;background:#292c34;border:0;color:#b8bec8;font-size:21px;line-height:1}
+.compose-placeholder{flex:1;border:1px solid #424650;border-radius:18px;padding:8px 13px;color:#7f8692;font-size:12px}
+.compose-send{width:25px;height:25px;border-radius:50%;background:#087df1;border:0;color:white;font-size:15px}
+.chat-record-id{font-size:9px;color:#6f7682;margin:27px 0 0}
+
 </style>
 </head>
 <body>
@@ -341,7 +386,7 @@ const chapters = [
  ]},
  {name:'CHAPTER 01',title:'남겨진 기록',desc:'기록 속에서 휴대폰 주인의 일상을 살펴보세요.',quests:[
   {id:'01-01',title:'작은 습관',desc:'메모 세 개를 읽고 반복되는 습관을 찾아보세요.',need:['N-01','N-02','N-04'],unlock:['N-09','P-10'],done:'누군가의 말을 기억해 두는 습관. 이 사람은 사소한 것을 쉽게 흘려보내지 않았습니다.'},
-  {id:'01-02',title:'익숙한 이름',desc:'메시지 목록과 통화 기록을 살펴보세요.',need:['M-FAMILY','M-FRIEND','M-NEIGHBOR','CALL-01'],unlock:['M-OLD-LOCK'],done:'오래전 대화가 남아 있는 대화방을 발견했습니다. 마지막 기록은 2016년 10월입니다.'},
+  {id:'01-02',title:'익숙한 이름',desc:'메시지 목록과 통화 기록을 살펴보세요.',need:['M-FAMILY','M-FRIEND','M-NEIGHBOR','CALL-01'],unlock:['M-OLD-LOCK','M-OLD'],done:'오래전 대화가 남아 있는 대화방을 발견했습니다. 마지막 기록은 2016년 10월입니다.'},
   {id:'01-03',title:'오래된 대화',desc:'잠긴 대화방을 열 암호를 찾아보세요.',need:['M-OLD'],unlock:['P-11','C-24','S-07'],done:'2016년 10월 24일. 두 사람은 그날 함께 바닷가에 갔습니다. “다음에도 꼭 같이 오자”는 약속이 남아 있습니다.'}
  ]},
  {name:'CHAPTER 02',title:'오래된 날짜',desc:'반복해서 등장하는 장소와 날짜를 연결하세요.',quests:[
@@ -451,11 +496,40 @@ function recordCard(id){
 }
 function renderRecord(id){
  const r=records[id]; if(!r)return;
- const visual=r.visual?`<div class="photo-art" style="background:${visualStyles[r.visual]}"><span>${r.visual==='sea'||r.visual==='horizon'||r.visual==='bench'?'': ' '}</span></div>`:'';
+ if(r.app==='messages'){renderMessageThread(id);return;}
+ const visual=r.visual?`<div class="photo-art" style="background:${visualStyles[r.visual]}"><span></span></div>`:'';
  const body=r.app==='notes'?`<div class="note-paper">${r.body}</div>`:`<div class="card record-body">${r.body}</div>`;
  $('appTitle').textContent=r.title;$('appAction').textContent=r.date;
  $('appBody').innerHTML=`<button class="secondary-btn record-back" onclick="openApp('${r.app}')">‹ ${appNames[r.app]} 목록으로</button>${visual}${body}<p class="subtext" style="margin-top:18px">기록 ID · ${id}</p>`;
- $('appView').scrollTop=0;
+ $('appBody').scrollTop=0;
+ markInspected(id);
+}
+function messageData(id){
+ const data={
+  'M-FAMILY':{name:'가족',initial:'가',date:'10월 21일 수요일',preview:'응. 걱정하지 마.',messages:[
+   ['in','오늘 저녁은 먹었어?','오후 7:12'],['out','아직. 조금 있다가 먹으려고.','오후 7:14'],['in','늦게 먹지 말고 챙겨 먹어.','오후 7:15'],['out','알겠어. 너도 밥 잘 챙겨 먹고.','오후 7:17'],['in','응. 걱정하지 마.','오후 7:18']]},
+  'M-FRIEND':{name:'친구',initial:'친',date:'10월 19일 월요일',preview:'그럼 네가 좋아하는 거 먹으러 가자.',messages:[
+   ['in','이번 주말에 밥 먹을래?','오후 2:03'],['out','좋아. 뭐 먹고 싶은데?','오후 2:05'],['in','네가 먹고 싶은 거.','오후 2:06'],['out','그럼 네가 좋아하는 거 먹으러 가자.','오후 2:08'],['in','역시 너는 착하다 ㅋㅋ','오후 2:09']]},
+  'M-NEIGHBOR':{name:'동네 친구',initial:'동',date:'10월 15일 목요일',preview:'다음에 같이 가자.',messages:[
+   ['in','전에 말한 빵집 가 봤어?','오후 5:31'],['out','응. 소금빵 맛있더라.','오후 5:34'],['in','다음에 같이 가자.','오후 5:35'],['out','좋아. 시간 맞춰 보자.','오후 5:37']]},
+  'M-OLD':{name:'알 수 없는 대화',initial:'?',date:'2016년 10월 24일 월요일',preview:'응. 다음에도 꼭.',messages:[
+   ['day','2016년 10월 24일'],['out','오늘 재밌었어.','오후 8:41'],['in','나도. 오랜만에 좋았다.','오후 8:43'],['out','다음에도 같이 오자.','오후 8:44'],['in','응. 다음에도 꼭.','오후 8:45'],['deleted','메시지가 삭제되었습니다.','오후 8:46'],['system','이전 메시지 일부를 불러올 수 없습니다.']]},
+  'M-DRAFT':{name:'임시 보관함',initial:'',date:'11월 2일 월요일',preview:'전송되지 않은 메시지',messages:[
+   ['day','11월 2일'],['out','잘 지내? 오랜만이야.','오후 11:08'],['out','갑자기 연락해서 미안해. 그냥 네가 생각나서…','오후 11:09'],['system','전송되지 않은 메시지입니다.']]}
+ };
+ return data[id];
+}
+function renderMessageThread(id){
+ const d=messageData(id);if(!d)return;
+ $('appTitle').textContent=d.name;$('appAction').textContent='';
+ const bubbles=d.messages.map(m=>{
+  if(m[0]==='day')return `<div class="chat-day">${m[1]}</div>`;
+  if(m[0]==='system')return `<div class="chat-system">${m[1]}</div>`;
+  if(m[0]==='deleted')return `<div class="chat-row mine"><div class="chat-bubble deleted">${m[1]}</div><span class="chat-time">${m[2]||''}</span></div>`;
+  return `<div class="chat-row ${m[0]==='out'?'mine':''}"><div class="chat-bubble ${m[0]==='out'?'outgoing':'incoming'}">${m[1]}</div><span class="chat-time">${m[2]||''}</span></div>`;
+ }).join('');
+ $('appBody').innerHTML=`<div class="chat-top"><button class="chat-back" onclick="openApp('messages')">‹</button><div class="chat-contact"><div class="chat-avatar">${d.initial||'↗'}</div><strong>${d.name}</strong><span>정보 ⌄</span></div><button class="chat-info" onclick="showToast('연락처 정보가 없습니다.')">ⓘ</button></div><div class="chat-date">${d.date}</div><div class="chat-thread">${bubbles}</div><div class="chat-compose"><button class="compose-plus" onclick="showToast('읽기 전용 대화입니다.')">＋</button><div class="compose-placeholder">iMessage</div><button class="compose-send" onclick="showToast('이 대화는 읽기 전용입니다.')">↑</button></div><p class="chat-record-id">기록 ID · ${id}</p>`;
+ $('appBody').scrollTop=0;
  markInspected(id);
 }
 function openRecord(id){if(!isUnlocked(id)){showToast('아직 열 수 없는 기록입니다.');return;}renderRecord(id);}
@@ -466,10 +540,13 @@ function openStoryApp(name){
  let intro={messages:'휴대폰에 남아 있는 대화입니다.',phone:'최근 통화와 연락 시도의 흔적입니다.',photos:'평범한 하루와 오래된 장소가 담겨 있습니다.',calendar:'기록된 일정과 잊지 못한 날짜입니다.',notes:'하루의 생각을 적어 둔 메모입니다.',browser:'최근 검색 기록입니다.',voice:'저장된 음성 메모입니다.',files:'휴대폰에 남겨진 문서입니다.'}[name];
  let content=`<div class="eyebrow">LAST DEVICE · ${title.toUpperCase()}</div><h2 class="section-title">${title}</h2><p class="subtext">${intro}</p>`;
  if(name==='messages'){
-   content+=`<div class="card row" onclick="openRecord('M-FAMILY')"><div class="avatar">가</div><div><div class="item-title">가족</div><div class="item-sub">오늘 저녁은 먹었어?</div></div><span class="chevron">›</span></div>
-   <div class="card row" onclick="openRecord('M-FRIEND')"><div class="avatar">친</div><div><div class="item-title">친구</div><div class="item-sub">이번 주말에 밥 먹을래?</div></div><span class="chevron">›</span></div>
-   <div class="card row" onclick="openRecord('M-NEIGHBOR')"><div class="avatar">동</div><div><div class="item-title">동네 친구</div><div class="item-sub">전에 말한 빵집 가 봤어?</div></div><span class="chevron">›</span></div>
-   ${recordCard('M-OLD-LOCK')}${recordCard('M-OLD')}${recordCard('M-DRAFT')}`;
+   content=`<div class="messages-screen"><div class="messages-toolbar"><div class="messages-title">메시지</div><button onclick="showToast('편집 기능은 미리보기에서 사용할 수 없습니다.')">편집</button></div><div class="messages-search"><span>⌕</span><input id="messageSearch" placeholder="검색" oninput="filterMessageList(this.value)"></div><div class="conversation-list" id="conversationList">
+   ${conversationRow('M-FAMILY','가족','응. 걱정하지 마.','오후 7:18','가')}
+   ${conversationRow('M-FRIEND','친구','역시 너는 착하다 ㅋㅋ','월요일','친')}
+   ${conversationRow('M-NEIGHBOR','동네 친구','좋아. 시간 맞춰 보자.','목요일','동')}
+   ${conversationRow('M-OLD','알 수 없는 대화','응. 다음에도 꼭.','2016. 10. 24','?',true)}
+   ${conversationRow('M-DRAFT','임시 보관함','전송되지 않은 메시지','11. 2','',false,true)}
+   </div><div class="messages-footer">메시지는 이 기기에서만 표시됩니다.</div></div>`;
  } else if(name==='photos'){
    content+=`<div class="photo-grid">${ids.map(id=>{const r=records[id],locked=!isUnlocked(id);return `<button class="photo-tile" onclick="${locked?`showToast('아직 열 수 없는 사진입니다.')`:`openRecord('${id}')`}" style="background:${locked?'#252933':visualStyles[r.visual]}"><span>${locked?'🔒':r.title}</span><small>${r.date}</small></button>`}).join('')}</div>`;
  } else {
@@ -478,6 +555,16 @@ function openStoryApp(name){
  content+=`<div class="quest-panel" id="questPanel"></div>`;
  $('appBody').innerHTML=content;$('appView').scrollTop=0;renderQuestPanel();
  showView('appView');currentView='app';
+}
+function conversationRow(id,name,preview,date,initial,unread=false,draft=false){
+ const locked=!isUnlocked(id);
+ const shownName=locked?'잠긴 대화':name;
+ const shownPreview=locked?'이 대화를 열려면 먼저 단서를 찾아야 합니다.':preview;
+ return `<button class="conversation-row" data-search="${(name+' '+preview).toLowerCase()}" onclick="${locked?`showToast('아직 열 수 없는 대화입니다.')`:`openRecord('${id}')`}"><div class="conversation-avatar">${locked?'🔒':(initial||'↗')}</div><div class="conversation-copy"><div class="conversation-topline"><strong>${shownName}</strong><span>${date}</span></div><div class="conversation-bottomline"><span>${draft?'초안 · ':''}${shownPreview}</span><b>›</b></div></div>${unread?'<i class="unread-dot"></i>':''}</button>`;
+}
+function filterMessageList(value){
+ const q=(value||'').toLowerCase();
+ document.querySelectorAll('.conversation-row').forEach(row=>{row.style.display=row.dataset.search.includes(q)?'flex':'none';});
 }
 function renderQuestPanel(){
  const q=activeQuest(); if(!q)return;
