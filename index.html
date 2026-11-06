@@ -12,8 +12,8 @@
   --accent:#b7c4d8;--safe-bottom:env(safe-area-inset-bottom, 0px);
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
-body{min-height:100svh;display:grid;place-items:center;padding:18px;background:
+html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+body{height:100svh;min-height:100svh;display:grid;place-items:center;padding:18px;overflow:hidden;background:
  radial-gradient(ellipse at 50% 20%,rgba(73,82,99,.2),transparent 45%),
  linear-gradient(145deg,#101216,#08090b 70%)}
 button{font:inherit;color:inherit;border:0;cursor:pointer}
@@ -23,8 +23,13 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .status-right{display:flex;gap:6px;align-items:center}
 .status svg{width:14px;height:14px;fill:currentColor}
 .dynamic-island{position:absolute;z-index:21;top:9px;left:50%;transform:translateX(-50%);width:104px;height:27px;border-radius:20px;background:#030304}
-.view{position:absolute;inset:0;display:none;overflow:auto;scrollbar-width:none}
+.view{position:absolute;inset:0;display:none;overflow:hidden;scrollbar-width:none}
 .view::-webkit-scrollbar{display:none}
+.home-view.active{overflow-y:auto;overscroll-behavior:contain}
+.app-view.active{display:flex;flex-direction:column;overflow:hidden}
+.app-view{padding-top:42px}
+.app-header{position:relative;top:auto;flex:0 0 54px}
+.app-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:20px 18px calc(42px + var(--safe-bottom))}
 .view.active{display:block}
 .lock-view{background:linear-gradient(180deg,rgba(9,12,19,.22),rgba(6,8,12,.75)),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85') center/cover}
 .lock-content{height:100%;display:flex;flex-direction:column;align-items:center;padding:80px 24px 28px;text-align:center}
@@ -127,8 +132,10 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .photo-tile{border:0;border-radius:12px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:10px;text-align:left;color:#fff;text-shadow:0 1px 5px #000;background-size:cover}
 .photo-tile span{font-size:12px;font-weight:650}
 .photo-tile small{font-size:10px;opacity:.8;margin-top:3px}
-.quest-launch{width:100%;margin:22px 0 12px;padding:12px 15px;border-radius:14px;background:#171c25b8;border:1px solid #ffffff30;color:#eef2f8;text-align:left;font-size:12px;backdrop-filter:blur(14px)}
-.quest-launch span{float:right;font-size:18px;line-height:12px}
+.quest-icon-button{width:34px;height:34px;display:grid;place-items:center;margin:0 0 10px auto;border-radius:11px;background:#171c25b8;border:1px solid #ffffff38;backdrop-filter:blur(14px)}
+.quest-icon-button svg{width:18px;height:18px;fill:none;stroke:#f0f3f8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.record-back{margin:0 0 20px}
+.note-paper{margin-top:0}
 .quest-panel{margin-top:26px}
 .quest-box{background:#202630;border:1px solid #ffffff18;border-radius:16px;padding:16px;margin-top:16px}
 .quest-box h3{font-size:18px;margin:7px 0}
@@ -176,18 +183,19 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 
     <section class="view home-view" id="homeView">
       <div class="home-content">
+        <button class="quest-icon-button" aria-label="현재 퀘스트" onclick="renderQuestApp()"><svg viewBox="0 0 24 24"><path d="M5 5.5h14v13H5z"/><path d="m8 9 1.5 1.5L12 8m1 1h3m-8 5 1.5 1.5L12 13m1 1h3"/></svg></button>
         <div class="home-date" id="homeDate">수요일, 11월 4일</div>
         <div class="app-grid">
           <button class="app" onclick="openApp('messages')"><span class="app-icon icon-message"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.8 8.8 0 0 1-3.5-.8L4 20l1.3-3.6A7.1 7.1 0 0 1 4 12c0-4.1 3.6-7.5 8-7.5s8 3.1 8 7z"/></svg></span><span class="app-label">메시지</span></button>
           <button class="app" onclick="openApp('phone')"><span class="app-icon icon-phone"><svg viewBox="0 0 24 24"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2z"/></svg></span><span class="app-label">전화</span></button>
-          <button class="app" onclick="openApp('photos')"><span class="app-icon icon-photo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3"/><path d="M12 4.5V9m7.5 3H15M12 19.5V15m-7.5-3H9"/></svg></span><span class="app-label">사진</span></button>
+          <button class="app" onclick="openApp('photos')"><span class="app-icon icon-photo"><svg viewBox="0 0 24 24"><path d="M12 2.8c2.1 0 3.2 2.1 2.4 4.1L12 12l-2.4-5.1C8.7 4.9 9.9 2.8 12 2.8Z" fill="#fff" stroke="none"/><path d="M21.2 8c1 1.8-.3 3.9-2.5 4.1L12 12l3.5-4.4c1.4-1.7 4.7-1.5 5.7.4Z" fill="#fff" stroke="none"/><path d="M18.5 20.2c-1.8 1-3.9-.3-4.1-2.5L12 12l4.4 3.5c1.7 1.4 1.5 4.7-.4 5.7Z" fill="#fff" stroke="none"/><path d="M5.5 20.2c-1.8-1-2.1-4.3-.4-5.7L12 12l-2.4 5.7c-.9 2.2-2.3 3.5-4.1 2.5Z" fill="#fff" stroke="none"/><path d="M2.8 8c1-1.9 4.3-2.1 5.7-.4L12 12l-6.7.1C3.1 11.9 1.8 9.8 2.8 8Z" fill="#fff" stroke="none"/></svg></span><span class="app-label">사진</span></button>
           <button class="app" onclick="openApp('calendar')"><span class="app-icon icon-calendar"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M4 9h16"/><path d="M8 13h2m4 0h2m-8 4h2"/></svg></span><span class="app-label">캘린더</span></button>
           <button class="app" onclick="openApp('notes')"><span class="app-icon icon-note"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 9h6M9 13h6M9 17h4"/></svg></span><span class="app-label">메모</span></button>
           <button class="app" onclick="openApp('browser')"><span class="app-icon icon-browser"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9z"/></svg></span><span class="app-label">Safari</span></button>
           <button class="app" onclick="openApp('voice')"><span class="app-icon icon-voice"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></span><span class="app-label">음성 메모</span></button>
           <button class="app" onclick="openApp('files')"><span class="app-icon icon-files"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/></svg></span><span class="app-label">파일</span></button>
         </div>
-        <button class="quest-launch" onclick="renderQuestApp()">진행 중인 퀘스트 확인 <span>›</span></button><div class="dock">
+        <div class="dock">
           <button class="app" onclick="openApp('messages')"><span class="app-icon icon-message"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.8 8.8 0 0 1-3.5-.8L4 20l1.3-3.6A7.1 7.1 0 0 1 4 12c0-4.1 3.6-7.5 8-7.5s8 3.1 8 7z"/></svg></span></button>
           <button class="app" onclick="openApp('phone')"><span class="app-icon icon-phone"><svg viewBox="0 0 24 24"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2z"/></svg></span></button>
           <button class="app" onclick="openApp('photos')"><span class="app-icon icon-photo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3"/></svg></span></button>
@@ -269,12 +277,7 @@ function pressKey(k){
 function updateDots(){document.querySelectorAll('#passDots .dot').forEach((d,i)=>d.classList.toggle('filled',i<passcode.length));}
 function goHome(){showView('homeView');currentView='home';}
 function openApp(name){
-  const data=apps[name]; if(!data)return;
-  $('appTitle').textContent=data.title;
-  $('appAction').textContent=data.action||'';
-  $('appBody').innerHTML=data.html;
-  showView('appView');currentView='app';
-  $('appView').scrollTop=0;
+  openStoryApp(name);
 }
 function showToast(message){
   const t=$('toast');t.textContent=message;t.classList.add('show');
@@ -418,12 +421,12 @@ function renderRecord(id){
  const visual=r.visual?`<div class="photo-art" style="background:${visualStyles[r.visual]}"><span>${r.visual==='sea'||r.visual==='horizon'||r.visual==='bench'?'': ' '}</span></div>`:'';
  const body=r.app==='notes'?`<div class="note-paper">${r.body}</div>`:`<div class="card record-body">${r.body}</div>`;
  $('appTitle').textContent=r.title;$('appAction').textContent=r.date;
- $('appBody').innerHTML=`<button class="secondary-btn" onclick="openApp('${r.app}')">‹ ${appNames[r.app]} 목록으로</button>${visual}${body}<p class="subtext" style="margin-top:18px">기록 ID · ${id}</p>`;
+ $('appBody').innerHTML=`<button class="secondary-btn record-back" onclick="openApp('${r.app}')">‹ ${appNames[r.app]} 목록으로</button>${visual}${body}<p class="subtext" style="margin-top:18px">기록 ID · ${id}</p>`;
  $('appView').scrollTop=0;
  markInspected(id);
 }
 function openRecord(id){if(!isUnlocked(id)){showToast('아직 열 수 없는 기록입니다.');return;}renderRecord(id);}
-function openApp(name){
+function openStoryApp(name){
  const title=appNames[name]; if(!title)return;
  $('appTitle').textContent=title;$('appAction').textContent='';
  const ids=Object.keys(records).filter(id=>records[id].app===name);
@@ -464,7 +467,7 @@ function completeQuest(id){
 function renderQuestApp(){
  const q=activeQuest(),idx=currentChapterIndex(),ch=chapters[idx];
  $('appTitle').textContent='진행 상황';$('appAction').textContent='LAST DEVICE';
- $('appBody').innerHTML=`<div class="eyebrow">${ch.name}</div><h2 class="section-title">${ch.title}</h2><p class="subtext">${ch.desc}</p><div class="quest-box"><div class="eyebrow">CURRENT QUEST</div><h3>${q?.title||'모든 기록 확인 완료'}</h3><p>${q?.desc||'이야기가 끝났습니다.'}</p>${q?`<div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div>`:''}</div><h3 style="margin-top:24px">퀘스트 기록</h3>${chapters.map(c=>`<div class="card"><div class="item-title">${c.name} · ${c.title}</div><div class="item-sub">${c.quests.map(x=>(story.completed.has(x.id)?'✓ ':'○ ')+x.title).join('<br>')}</div></div>`).join('')}`;
+ $('appBody').innerHTML=`<div class="eyebrow">${ch.name}</div><h2 class="section-title">${ch.title}</h2><p class="subtext">${ch.desc}</p><div class="quest-box"><div class="eyebrow">CURRENT QUEST</div><h3>${q?.title||'모든 기록 확인 완료'}</h3><p>${q?.desc||'이야기가 끝났습니다.'}</p>${q?`<div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div><button class="primary-btn" ${q.need.every(id=>story.inspected.has(id))?'':'disabled'} onclick="completeQuest('${q.id}')">${q.need.every(id=>story.inspected.has(id))?'퀘스트 완료':'필요한 기록을 먼저 확인하세요'}</button>`:''}</div>`;
  showView('appView');currentView='app';
 }
 function goHome(){showView('homeView');currentView='home';}
