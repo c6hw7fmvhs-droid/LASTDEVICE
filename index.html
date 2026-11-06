@@ -37,16 +37,24 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .lock-bottom{margin-top:auto;width:100%;display:flex;justify-content:space-between;align-items:center}
 .round-control{width:44px;height:44px;border-radius:50%;background:#252a32a8;border:1px solid #ffffff30;display:grid;place-items:center;backdrop-filter:blur(12px)}
 .round-control svg{width:19px;height:19px;fill:none;stroke:white;stroke-width:1.8}
-.unlock-hint{font-size:11px;color:#e0e3e8;margin-top:16px;letter-spacing:.04em}
+.slide-unlock{width:100%;margin-top:22px;padding:0 2px;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.slide-track{height:52px;position:relative;border-radius:10px;background:linear-gradient(180deg,#3a3d43,#17191e 55%,#292c32);border:1px solid #555b65;box-shadow:inset 0 1px 2px #ffffff24,0 3px 12px #0008;overflow:hidden}
+.slide-fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#aeb9c8aa,#dce4f044);pointer-events:none}
+.slide-label{position:absolute;inset:0;display:grid;place-items:center;color:#d4d7dd;font-size:14px;letter-spacing:.02em;text-shadow:0 1px 2px #000;pointer-events:none;transition:opacity .15s}
+.slide-thumb{position:absolute;z-index:2;left:3px;top:3px;width:58px;height:44px;border-radius:7px;background:linear-gradient(180deg,#f5f6f7,#bfc4cb);border:1px solid #fff;box-shadow:0 2px 5px #0008;display:grid;place-items:center;touch-action:none;padding:0}
+.slide-thumb svg{width:25px;height:25px;fill:none;stroke:#515965;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.slide-unlock.unlocked .slide-label{opacity:0}
+.slide-unlock.unlocked .slide-thumb{background:linear-gradient(180deg,#dce9dd,#9bbca0)}
+@media(max-width:430px){.slide-track{height:54px}.slide-thumb{height:46px}}
 .home-view{background:
  linear-gradient(180deg,rgba(12,15,22,.3),rgba(9,11,16,.82)),
  url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=85') center/cover}
 .home-content{height:100%;padding:62px 21px calc(24px + var(--safe-bottom));display:flex;flex-direction:column}
 .home-date{font-size:12px;color:#e0e3e8;text-align:center;margin-bottom:7px}
 .home-clock{font-size:32px;font-weight:600;letter-spacing:-1px;text-align:center;margin-bottom:26px}
-.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:23px 12px}
-.app{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;padding:0;min-width:0}
-.app-icon{width:55px;height:55px;border-radius:15px;display:grid;place-items:center;box-shadow:0 5px 14px #0005;position:relative}
+.app-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));justify-items:center;align-items:start;column-gap:10px;row-gap:27px}
+.app{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;background:none;padding:0;min-width:0;width:100%}
+.app-icon{width: min(100%,68px);aspect-ratio:1/1;height:auto;border-radius:18px;display:grid;place-items:center;box-shadow:0 5px 14px #0005;position:relative;flex:0 0 auto}
 .app-icon svg{width:27px;height:27px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .app-label{font-size:10px;color:#fff;text-shadow:0 1px 5px #000;white-space:nowrap}
 .icon-message{background:linear-gradient(145deg,#57d66c,#159b49)}
@@ -61,7 +69,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .icon-settings{background:linear-gradient(145deg,#8c929e,#4c525d)}
 .icon-mail{background:linear-gradient(145deg,#77aaf7,#3868bc)}
 .dock{margin-top:auto;display:flex;justify-content:space-around;padding:12px 9px;background:#dce1e833;border:1px solid #ffffff26;border-radius:24px;backdrop-filter:blur(22px)}
-.dock .app-icon{width:49px;height:49px}
+.dock .app-icon{width:58px;height:auto;aspect-ratio:1/1;border-radius:16px}
 .home-indicator{position:absolute;z-index:30;bottom:7px;left:50%;transform:translateX(-50%);width:112px;height:4px;border-radius:5px;background:#fff;opacity:.9}
 .app-view{background:#111318;padding-top:48px}
 .app-header{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#111318ed;backdrop-filter:blur(15px);z-index:5}
@@ -107,7 +115,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .key:active{background:#414957}
 .passcode-cancel{background:none;color:#aab3c2;margin-top:22px;font-size:13px}
 @media(max-width:430px){body{padding:0;background:#08090b}.phone{width:100vw;height:100svh;min-height:560px;border:0;border-radius:0;padding:0;box-shadow:none}.screen{border-radius:0}.dynamic-island{top:9px}}
-@media(max-height:680px){.phone{min-height:0}.home-content{padding-top:54px}.app-grid{gap:15px 10px}.app-icon{width:49px;height:49px}}
+@media(max-height:680px){.phone{min-height:0}.home-content{padding-top:54px}.app-grid{row-gap:18px}.app-icon{width:min(100%,60px)}}
 </style>
 </head>
 <body>
@@ -133,7 +141,15 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
             <svg viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
           </button>
         </div>
-        <div class="unlock-hint">화면을 위로 밀어 잠금 해제</div>
+        <div class="slide-unlock" id="slideUnlock" aria-label="밀어서 잠금 해제">
+          <div class="slide-track">
+            <div class="slide-fill" id="slideFill"></div>
+            <div class="slide-label" id="slideLabel">밀어서 잠금 해제</div>
+            <button class="slide-thumb" id="slideThumb" type="button" aria-label="오른쪽으로 밀어 잠금 해제">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -209,7 +225,11 @@ function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   $(id).classList.add('active');
 }
-function unlock(){ $('passcodeOverlay').classList.add('show'); passcode=""; updateDots(); }
+function unlock(){
+  showView('homeView');
+  currentView='home';
+  showToast('잠금이 해제되었습니다.');
+}
 function closePasscode(){ $('passcodeOverlay').classList.remove('show'); }
 function pressKey(k){
   if(k==='del'){passcode=passcode.slice(0,-1);}
@@ -296,10 +316,63 @@ const apps={
   <div class="card locked-card"><div class="locked-symbol"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="item-title">LAST_RECORD</div><div class="item-sub">잠긴 폴더 · 접근 권한 없음</div></div><span class="chevron">›</span></div>
   <div class="card locked-card"><div class="locked-symbol"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="item-title">ARCHIVE</div><div class="item-sub">암호화된 파일</div></div><span class="chevron">›</span></div>`}
 };
-const screen=$('lockView');
-screen.addEventListener('touchstart',e=>{touchStartY=e.changedTouches[0].screenY},{passive:true});
-screen.addEventListener('touchend',e=>{if(touchStartY-e.changedTouches[0].screenY>45)unlock()},{passive:true});
-screen.addEventListener('click',e=>{if(e.target.closest('button'))return;unlock()});
+const slideControl = $('slideUnlock');
+const slideThumb = $('slideThumb');
+const slideFill = $('slideFill');
+const slideLabel = $('slideLabel');
+let dragging = false;
+let dragStartX = 0;
+let thumbStartX = 0;
+
+function sliderMax(){
+  return Math.max(0, slideControl.clientWidth - slideThumb.offsetWidth - 6);
+}
+function setSliderPosition(x){
+  const max = sliderMax();
+  const next = Math.max(0, Math.min(max, x));
+  slideThumb.style.left = (3 + next) + 'px';
+  slideFill.style.width = (next + slideThumb.offsetWidth + 3) + 'px';
+  slideLabel.style.opacity = String(1 - Math.min(1, next / Math.max(1, max)) * .85);
+  return next;
+}
+function finishSlider(){
+  const max = sliderMax();
+  const current = parseFloat(slideThumb.style.left || '3') - 3;
+  if(current >= max * .82){
+    slideControl.classList.add('unlocked');
+    slideThumb.style.left = (3 + max) + 'px';
+    slideFill.style.width = '100%';
+    setTimeout(unlock, 160);
+  }else{
+    slideThumb.style.left = '3px';
+    slideFill.style.width = '0';
+    slideLabel.style.opacity = '1';
+  }
+}
+slideThumb.addEventListener('pointerdown', e=>{
+  if(currentView !== 'lock') return;
+  dragging = true;
+  dragStartX = e.clientX;
+  thumbStartX = parseFloat(slideThumb.style.left || '3') - 3;
+  slideThumb.setPointerCapture(e.pointerId);
+});
+slideThumb.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  const moved = setSliderPosition(thumbStartX + e.clientX - dragStartX);
+  if(moved >= sliderMax() * .82){
+    dragging = false;
+    finishSlider();
+  }
+});
+slideThumb.addEventListener('pointerup', ()=>{
+  if(!dragging) return;
+  dragging = false;
+  finishSlider();
+});
+slideThumb.addEventListener('pointercancel', ()=>{
+  dragging = false;
+  finishSlider();
+});
 $('homeIndicator').addEventListener('click',()=>{if(currentView==='app')goHome();else if(currentView==='home'){showView('lockView');currentView='lock';}});
 document.addEventListener('keydown',e=>{
   if($('passcodeOverlay').classList.contains('show')){
