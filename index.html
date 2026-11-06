@@ -116,6 +116,27 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .passcode-cancel{background:none;color:#aab3c2;margin-top:22px;font-size:13px}
 @media(max-width:430px){body{padding:0;background:#08090b}.phone{width:100vw;height:100svh;min-height:560px;border:0;border-radius:0;padding:0;box-shadow:none}.screen{border-radius:0}.dynamic-island{top:9px}}
 @media(max-height:680px){.phone{min-height:0}.home-content{padding-top:54px}.app-grid{row-gap:18px}.app-icon{width:min(100%,60px)}}
+
+.record-card{cursor:pointer}
+.record-icon{width:39px;height:39px;border-radius:12px;background:#303846;display:grid;place-items:center;color:#d7e0ee;font-size:19px;flex:none}
+.record-info{min-width:0}
+.record-body{font-size:14px;line-height:1.85;color:#e6e8ec;white-space:normal}
+.photo-art{height:210px;border-radius:16px;margin:17px 0 12px;box-shadow:inset 0 0 40px #0004;position:relative;overflow:hidden}
+.photo-art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,#0005)}
+.photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:15px}
+.photo-tile{border:0;border-radius:12px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:10px;text-align:left;color:#fff;text-shadow:0 1px 5px #000;background-size:cover}
+.photo-tile span{font-size:12px;font-weight:650}
+.photo-tile small{font-size:10px;opacity:.8;margin-top:3px}
+.quest-launch{width:100%;margin:22px 0 12px;padding:12px 15px;border-radius:14px;background:#171c25b8;border:1px solid #ffffff30;color:#eef2f8;text-align:left;font-size:12px;backdrop-filter:blur(14px)}
+.quest-launch span{float:right;font-size:18px;line-height:12px}
+.quest-panel{margin-top:26px}
+.quest-box{background:#202630;border:1px solid #ffffff18;border-radius:16px;padding:16px;margin-top:16px}
+.quest-box h3{font-size:18px;margin:7px 0}
+.quest-box p{font-size:12px;color:#aeb6c3;line-height:1.6;margin:0}
+.quest-progress{display:flex;flex-direction:column;gap:8px;margin:14px 0;font-size:11px;color:#aeb6c3}
+.quest-progress span.checked{color:#b9d9c0}
+.primary-btn:disabled{opacity:.48;cursor:not-allowed}
+
 </style>
 </head>
 <body>
@@ -131,7 +152,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
         <div class="notification">
           <div class="notif-top"><span>메시지 · 알림</span><span>방금 전</span></div>
           <div class="notif-title">알 수 없는 발신자</div>
-          <div class="notif-text">이번에는 나를 찾지 마.</div>
+          <div class="notif-text">이 휴대폰의 주인을 찾을 수 있을까?</div>
         </div>
         <div class="lock-bottom">
           <button class="round-control" aria-label="손전등" onclick="showToast('손전등 기능은 준비 중입니다.')">
@@ -141,10 +162,10 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
             <svg viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
           </button>
         </div>
-        <div class="slide-unlock" id="slideUnlock" aria-label="밀어서 잠금 해제">
+        <div class="slide-unlock" id="slideUnlock" aria-label="밀어서 휴대폰 열기">
           <div class="slide-track">
             <div class="slide-fill" id="slideFill"></div>
-            <div class="slide-label" id="slideLabel">밀어서 잠금 해제</div>
+            <div class="slide-label" id="slideLabel">밀어서 휴대폰 열기</div>
             <button class="slide-thumb" id="slideThumb" type="button" aria-label="오른쪽으로 밀어 잠금 해제">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
             </button>
@@ -166,7 +187,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
           <button class="app" onclick="openApp('voice')"><span class="app-icon icon-voice"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></span><span class="app-label">음성 메모</span></button>
           <button class="app" onclick="openApp('files')"><span class="app-icon icon-files"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/></svg></span><span class="app-label">파일</span></button>
         </div>
-        <div class="dock">
+        <button class="quest-launch" onclick="renderQuestApp()">진행 중인 퀘스트 확인 <span>›</span></button><div class="dock">
           <button class="app" onclick="openApp('messages')"><span class="app-icon icon-message"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.8 8.8 0 0 1-3.5-.8L4 20l1.3-3.6A7.1 7.1 0 0 1 4 12c0-4.1 3.6-7.5 8-7.5s8 3.1 8 7z"/></svg></span></button>
           <button class="app" onclick="openApp('phone')"><span class="app-icon icon-phone"><svg viewBox="0 0 24 24"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2z"/></svg></span></button>
           <button class="app" onclick="openApp('photos')"><span class="app-icon icon-photo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3"/></svg></span></button>
@@ -259,61 +280,199 @@ function showToast(message){
   const t=$('toast');t.textContent=message;t.classList.add('show');
   clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100);
 }
+
 const apps={
- messages:{title:'메시지',action:'편집',html:`
-  <div class="eyebrow">최근 대화</div><h2 class="section-title">메시지</h2><p class="subtext">휴대폰에 남아 있는 대화 기록입니다.</p>
-  <div class="card row" onclick="openApp('conversation')"><div class="avatar">?</div><div><div class="item-title">알 수 없는 발신자</div><div class="item-sub">이번에는 나를 찾지 마.</div></div><span class="chevron">›</span></div>
-  <div class="card row"><div class="avatar">ㅇ</div><div><div class="item-title">저장되지 않은 번호</div><div class="item-sub">대화 기록이 비어 있습니다.</div></div><span class="chevron">›</span></div>
-  <div class="card row"><div class="avatar"> </div><div><div class="item-title">알 수 없음</div><div class="item-sub">삭제된 대화</div></div><span class="chevron">›</span></div>`},
- conversation:{title:'알 수 없는 발신자',action:'정보',html:`
-  <div class="message-time">11월 3일 화요일 23:41</div>
-  <div class="message-bubble">아직 깨어 있어?</div><div class="message-bubble mine">응. 무슨 일이야?</div>
-  <div class="message-bubble">그 일은 이제 그만 생각해.</div><div class="message-bubble mine">잊으려고 해도 잘 안 돼.</div>
-  <div class="message-time">11월 4일 수요일 00:02</div>
-  <div class="message-bubble">이번에는 나를 찾지 마.</div>
-  <p class="subtext" style="margin-top:25px">이 대화의 나머지 기록은 삭제되어 있습니다.</p>`},
- phone:{title:'전화',action:'편집',html:`
-  <div class="eyebrow">최근 통화</div><h2 class="section-title">통화 기록</h2>
-  <div class="card row"><div class="avatar">↙</div><div><div class="item-title">알 수 없는 번호</div><div class="item-sub">11월 3일 · 오후 11:38 · 부재중</div></div></div>
-  <div class="card row"><div class="avatar">↗</div><div><div class="item-title">발신 번호 없음</div><div class="item-sub">11월 3일 · 오후 10:16 · 02:41</div></div></div>
-  <div class="card row"><div class="avatar">↙</div><div><div class="item-title">알 수 없는 번호</div><div class="item-sub">11월 2일 · 오후 9:07 · 부재중</div></div></div>
-  <div class="card row"><div class="avatar">◉</div><div><div class="item-title">음성 사서함</div><div class="item-sub">저장된 메시지 1개</div></div></div>`},
- photos:{title:'사진',action:'선택',html:`
-  <div class="eyebrow">최근 항목</div><h2 class="section-title">사진</h2><p class="subtext">최근 저장된 사진 18장</p>
-  <div class="photo-grid">
-   <div class="photo-placeholder"><svg viewBox="0 0 24 24"><path d="M3 18l6-7 4 4 3-3 5 6M3 5h18v14H3z"/><circle cx="9" cy="9" r="1.5"/></svg></div>
-   <div class="photo-placeholder"><svg viewBox="0 0 24 24"><path d="M3 18l6-7 4 4 3-3 5 6M3 5h18v14H3z"/></svg></div>
-   <div class="photo-placeholder"><svg viewBox="0 0 24 24"><path d="M3 18l6-7 4 4 3-3 5 6M3 5h18v14H3z"/></svg></div>
-   <div class="photo-placeholder"><svg viewBox="0 0 24 24"><path d="M3 18l6-7 4 4 3-3 5 6M3 5h18v14H3z"/></svg></div>
-  </div><p class="subtext" style="margin-top:15px">일부 사진은 원본이 손상되었거나 삭제된 상태입니다.</p>`},
- calendar:{title:'캘린더',action:'오늘',html:`
-  <div class="eyebrow">2026년 11월</div><h2 class="section-title">캘린더</h2>
-  <div class="card"><div class="item-title">11월 3일 · 화요일</div><div class="item-sub">오후 6:30 · 일정 없음</div></div>
-  <div class="card"><div class="item-title">11월 4일 · 수요일</div><div class="item-sub">오후 9:00 · 장소 미지정</div></div>
-  <div class="card"><div class="item-title">11월 5일 · 목요일</div><div class="item-sub">일정이 삭제되었습니다.</div></div>`},
- notes:{title:'메모',action:'편집',html:`
-  <div class="eyebrow">나의 메모</div><h2 class="section-title">메모</h2>
-  <div class="card"><div class="item-title">11월 3일</div><div class="item-sub">오늘은 이상하게 조용했다.</div></div>
-  <div class="card"><div class="item-title">기억해야 할 것</div><div class="item-sub">날짜를 다시 확인하기.</div></div>
-  <div class="card"><div class="item-title">제목 없음</div><div class="item-sub">잠긴 메모 · 암호 필요</div></div>
-  <div class="note-paper" style="margin-top:16px">오늘은 조금 피곤했다.<br>별일은 없었다.<br><br>그렇게 생각하고 싶다.</div>`},
- browser:{title:'Safari',action:'완료',html:`
-  <div class="eyebrow">방문 기록</div><h2 class="section-title">최근 검색</h2>
-  <div class="card"><div class="item-title">기억이 정확하지 않을 때</div><div class="item-sub">검색 기록 · 11월 3일</div></div>
-  <div class="card"><div class="item-title">휴대폰 데이터 복구 방법</div><div class="item-sub">검색 기록 · 11월 2일</div></div>
-  <div class="card"><div class="item-title">사진 촬영 날짜 확인</div><div class="item-sub">검색 기록 · 11월 1일</div></div>
-  <div class="card"><div class="item-title">페이지를 찾을 수 없습니다</div><div class="item-sub">방문 기록이 일부 삭제되었습니다.</div></div>`},
- voice:{title:'음성 메모',action:'편집',html:`
-  <div class="eyebrow">모든 녹음</div><h2 class="section-title">음성 메모</h2>
-  <div class="card row"><div class="locked-symbol">▶</div><div><div class="item-title">녹음 001</div><div class="item-sub">11월 3일 · 00:18</div></div><span class="chevron">›</span></div>
-  <div class="card row"><div class="locked-symbol">▶</div><div><div class="item-title">녹음 002</div><div class="item-sub">11월 2일 · 01:04</div></div><span class="chevron">›</span></div>
-  <p class="subtext" style="margin-top:18px">일부 녹음 파일은 재생할 수 없습니다.</p>`},
- files:{title:'파일',action:'둘러보기',html:`
-  <div class="eyebrow">나의 iPhone</div><h2 class="section-title">파일</h2>
-  <div class="card row"><div class="locked-symbol">▤</div><div><div class="item-title">최근 항목</div><div class="item-sub">최근 열어본 파일</div></div><span class="chevron">›</span></div>
-  <div class="card locked-card"><div class="locked-symbol"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="item-title">LAST_RECORD</div><div class="item-sub">잠긴 폴더 · 접근 권한 없음</div></div><span class="chevron">›</span></div>
-  <div class="card locked-card"><div class="locked-symbol"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="item-title">ARCHIVE</div><div class="item-sub">암호화된 파일</div></div><span class="chevron">›</span></div>`}
+ messages:{title:'메시지',action:'최근 대화',html:''},
+ phone:{title:'전화',action:'최근 통화',html:''},
+ photos:{title:'사진',action:'최근 항목',html:''},
+ calendar:{title:'캘린더',action:'2026년 11월',html:''},
+ notes:{title:'메모',action:'모든 메모',html:''},
+ browser:{title:'Safari',action:'방문 기록',html:''},
+ voice:{title:'음성 메모',action:'모든 녹음',html:''},
+ files:{title:'파일',action:'나의 iPhone',html:''}
 };
+
+const story = {
+  chapter:0,
+  completed:new Set(),
+  inspected:new Set(),
+  unlocked:new Set(['N-01','N-02','N-03','N-04','N-05','N-06','M-FAMILY','M-FRIEND','M-NEIGHBOR','P-01','P-02','P-03','P-04','P-05','P-06','P-07','P-08','P-09','C-08','C-10','C-12','S-01','S-02','S-03','S-04','S-05','S-06','V-01','F-01']),
+  finalUnlocked:false
+};
+const chapters = [
+ {name:'PROLOGUE',title:'AN UNKNOWN DEVICE',desc:'처음 보는 휴대폰의 기록을 살펴보세요.',quests:[
+  {id:'P-01',title:'처음 보는 휴대폰',desc:'사진, 메모, 캘린더에서 기록을 하나씩 확인하세요.',need:['P-01','N-01','C-08'],unlock:['N-09'],done:'휴대폰 주인은 평범한 일상을 꼼꼼하게 기록하는 사람이었던 것 같습니다. 사소한 하루의 흔적 사이에 오래된 기억이 섞여 있습니다.'}
+ ]},
+ {name:'CHAPTER 01',title:'남겨진 기록',desc:'기록 속에서 휴대폰 주인의 일상을 살펴보세요.',quests:[
+  {id:'01-01',title:'작은 습관',desc:'메모 세 개를 읽고 반복되는 습관을 찾아보세요.',need:['N-01','N-02','N-04'],unlock:['N-09','P-10'],done:'누군가의 말을 기억해 두는 습관. 이 사람은 사소한 것을 쉽게 흘려보내지 않았습니다.'},
+  {id:'01-02',title:'익숙한 이름',desc:'메시지 목록과 통화 기록을 살펴보세요.',need:['M-FAMILY','M-FRIEND','M-NEIGHBOR','CALL-01'],unlock:['M-OLD-LOCK'],done:'오래전 대화가 남아 있는 대화방을 발견했습니다. 마지막 기록은 2016년 10월입니다.'},
+  {id:'01-03',title:'오래된 대화',desc:'잠긴 대화방을 열 암호를 찾아보세요.',need:['M-OLD'],unlock:['P-11','C-24','S-07'],done:'2016년 10월 24일. 두 사람은 그날 함께 바닷가에 갔습니다. “다음에도 꼭 같이 오자”는 약속이 남아 있습니다.'}
+ ]},
+ {name:'CHAPTER 02',title:'오래된 날짜',desc:'반복해서 등장하는 장소와 날짜를 연결하세요.',quests:[
+  {id:'02-01',title:'반복되는 장소',desc:'사진 속 풍경을 살펴보고 공통된 장소를 찾아보세요.',need:['P-10','P-11'],unlock:['P-12','S-08'],done:'사진 속 장소는 같은 바닷가입니다. 여러 해가 지났는데도 같은 방향에서 바다를 찍었습니다.'},
+  {id:'02-02',title:'잊히지 않는 날짜',desc:'캘린더의 잠긴 날짜를 확인하세요.',need:['C-24'],unlock:['N-07'],done:'10월 24일은 두 사람이 다시 만나기로 약속한 날이었습니다.'},
+  {id:'02-03',title:'10년 전의 약속',desc:'사진과 메모, 검색 기록을 함께 확인하세요.',need:['N-07','S-07','S-08','P-12'],unlock:['C-2026','M-OLD-2'],done:'약속한 날은 2026년 10월 24일. 휴대폰 주인은 그날 바닷가에 다녀왔습니다.'}
+ ]},
+ {name:'CHAPTER 03',title:'숨겨진 일상',desc:'평범한 기록에 남겨진 빈틈을 살펴보세요.',quests:[
+  {id:'03-01',title:'비어 있는 일정',desc:'최근 캘린더에서 반복되는 빈 일정을 확인하세요.',need:['C-2026'],unlock:['F-02'],done:'최근 일정에는 병원 방문으로 보이는 흔적이 반복됩니다.'},
+  {id:'03-02',title:'남겨진 문서',desc:'파일에 남겨진 문서를 확인하세요.',need:['F-02'],unlock:['N-08','CALL-02'],done:'휴대폰 주인은 오랫동안 치료를 받아 왔습니다. 기록은 최근 들어 급격히 줄어들었습니다.'},
+  {id:'03-03',title:'말하지 못한 이야기',desc:'메모와 통화 기록에서 연락을 망설인 흔적을 찾아보세요.',need:['N-08','CALL-02'],unlock:['M-DRAFT'],done:'그녀는 누군가에게 연락하려 했지만 끝내 보내지 못했습니다. 그 상대가 누구인지는 아직 알 수 없습니다.'}
+ ]},
+ {name:'CHAPTER 04',title:'보내지 못한 말',desc:'끝내 전하지 못한 마음에 가까워집니다.',quests:[
+  {id:'04-01',title:'작성 중인 메시지',desc:'보내지 않은 메시지 초안을 읽으세요.',need:['M-DRAFT'],unlock:['V-02'],done:'메시지에는 안부를 묻는 짧은 문장만 남아 있습니다. 지우고 다시 쓰기를 반복한 흔적이 있습니다.'},
+  {id:'04-02',title:'마지막 목소리',desc:'음성 메모에 남겨진 짧은 녹음을 확인하세요.',need:['V-02'],unlock:['P-13','V-FINAL-PART'],done:'녹음에는 오래된 사진을 찍던 날의 이야기가 담겨 있습니다. 두 사람은 친구라는 말로 서로를 설명했습니다.'},
+  {id:'04-03',title:'남겨진 사진',desc:'사진 뒷면의 기록과 오래된 사진을 확인하세요.',need:['P-13'],unlock:['V-FINAL','F-03'],done:'사진 속 두 사람 중 한 명은 기록을 읽고 있는 당신입니다. 그녀는 당신을 오래도록 특별하게 생각했습니다.'}
+ ]},
+ {name:'FINAL',title:'LAST DEVICE',desc:'마지막 기록을 열고 이야기를 마무리하세요.',quests:[
+  {id:'F-01',title:'너에게 남긴 기록',desc:'마지막 음성 메모를 재생하세요.',need:['V-FINAL'],unlock:['F-END'],done:'마지막 음성 메모가 복원되었습니다.'},
+  {id:'F-02',title:'마지막 약속',desc:'그녀가 남긴 마지막 말을 들으세요.',need:['F-END'],unlock:[],done:'기록을 모두 확인했습니다.'}
+ ]}
+];
+const records = {
+ 'N-01':{app:'notes',title:'오늘 할 일',date:'10월 12일',body:'장보기<br>세탁물 정리<br>읽던 책 마저 읽기<br>방 청소하기<br>좋아하는 차 사 오기'},
+ 'N-02':{app:'notes',title:'사소한 기록',date:'10월 14일',body:'오늘은 집에 오는 길에 작은 빵집에 들렀다. 새로 나온 빵이 있길래 하나 사 봤는데 생각보다 맛있었다. 다음에는 다른 것도 먹어 봐야겠다. 이런 사소한 발견은 꽤 기분이 좋다.'},
+ 'N-03':{app:'notes',title:'가 보고 싶은 곳',date:'10월 16일',body:'동네에 새로 생긴 카페.<br>서점에서 하는 작은 전시.<br>날씨 좋은 날 천천히 걷기 좋은 공원.'},
+ 'N-04':{app:'notes',title:'잊지 말 것',date:'10월 18일',body:'다음 주에 연락하기.<br>전에 이야기했던 것도 물어보기.<br><br>바쁘다는 핑계로 자꾸 미루지 말자.'},
+ 'N-05':{app:'notes',title:'오늘의 날씨',date:'10월 20일',body:'하루 종일 흐렸다. 우산을 챙기길 잘했다. 저녁에는 생각보다 쌀쌀해서 집에 오자마자 따뜻한 차를 마셨다.'},
+ 'N-06':{app:'notes',title:'문득 생각난 것',date:'10월 22일',body:'가끔은 별일 없이 누군가와 함께 걷던 시간이 생각난다. 특별한 이야기를 나눈 것도 아니고, 대단한 곳에 간 것도 아니었는데. 이상하게 그런 날들이 오래 기억에 남는다.'},
+ 'N-09':{app:'notes',title:'기억해 두기',date:'10월 23일',body:'좋아하는 것들은 생각보다 잘 잊히지 않는다. 누군가가 무심코 이야기했던 것도 그렇다. 그래서 가끔은 적어 둔다. 나중에 다시 이야기할 수 있도록.'},
+ 'N-07':{app:'notes',title:'10년 전의 약속',date:'2016년 10월 24일',body:'오늘 바닷가에서 약속했다.<br><br>10년 뒤에도 우리 둘 다 잘 지내고 있으면 여기서 다시 만나자고.<br><br>그때도 지금처럼 서로를 알아볼 수 있으면 좋겠다.'},
+ 'N-08':{app:'notes',title:'보내지 못한 말',date:'11월 2일',body:'잘 지내?<br><br>이렇게 묻는 게 너무 늦은 건 아닐까.<br>무슨 말을 해야 할지 모르겠다. 그냥 네 목소리를 한 번 듣고 싶었어.<br><br>아직도 네가 좋아하던 것들을 기억하고 있어.'},
+ 'M-FAMILY':{app:'messages',title:'가족',date:'10월 21일',body:'상대: 오늘 저녁은 먹었어?<br>서윤: 아직. 조금 있다가 먹으려고.<br>상대: 늦게 먹지 말고 챙겨 먹어.<br>서윤: 알겠어. 너도 밥 잘 챙겨 먹고.<br>상대: 응. 걱정하지 마.'},
+ 'M-FRIEND':{app:'messages',title:'친구',date:'10월 19일',body:'친구: 이번 주말에 밥 먹을래?<br>서윤: 좋아. 뭐 먹고 싶은데?<br>친구: 네가 먹고 싶은 거.<br>서윤: 그럼 네가 좋아하는 거 먹으러 가자.<br>친구: 역시 너는 착하다 ㅋㅋ'},
+ 'M-NEIGHBOR':{app:'messages',title:'동네 친구',date:'10월 15일',body:'친구: 전에 말한 빵집 가 봤어?<br>서윤: 응. 소금빵 맛있더라.<br>친구: 다음에 같이 가자.<br>서윤: 좋아. 시간 맞춰 보자.'},
+ 'M-OLD':{app:'messages',title:'2016년 10월 24일',date:'오래된 대화',body:'서윤: 오늘 재밌었어.<br>상대: 나도. 오랜만에 좋았다.<br>서윤: 다음에도 같이 오자.<br>상대: 응. 다음에도 꼭.<br><br><span class="subtext">대화 일부가 손상되어 있습니다.</span>'},
+ 'M-DRAFT':{app:'messages',title:'임시 보관함',date:'11월 2일 · 작성 중',body:'잘 지내? 오랜만이야.<br><br>갑자기 연락해서 미안해. 그냥 네가 생각나서…<br><br><span class="subtext">전송되지 않은 메시지입니다.</span>'},
+ 'P-01':{app:'photos',title:'작은 빵집',date:'10월 14일',body:'집으로 돌아오는 길에 들른 작은 빵집. 종이봉투 한쪽이 살짝 구겨져 있다.',visual:'cafe'},
+ 'P-02':{app:'photos',title:'책상 위',date:'10월 12일',body:'메모장과 식어 가는 커피. 정리하려던 책은 펼쳐진 채 놓여 있다.',visual:'desk'},
+ 'P-03':{app:'photos',title:'동네 골목',date:'10월 16일',body:'익숙한 동네 골목. 오후의 빛이 건물 사이로 길게 들어온다.',visual:'street'},
+ 'P-04':{app:'photos',title:'흐린 하늘',date:'10월 20일',body:'비가 오기 직전의 하늘.',visual:'sky'},
+ 'P-05':{app:'photos',title:'읽던 책',date:'10월 18일',body:'반납일을 적어 둔 작은 메모지가 책 사이에 끼워져 있다.',visual:'book'},
+ 'P-06':{app:'photos',title:'저녁 식사',date:'10월 21일',body:'집에서 먹은 간단한 저녁.',visual:'food'},
+ 'P-07':{app:'photos',title:'창밖의 노을',date:'10월 22일',body:'창문 너머로 보이는 저녁 하늘.',visual:'sunset'},
+ 'P-08':{app:'photos',title:'비 오는 거리',date:'10월 20일',body:'젖은 도로 위에 가로등 불빛이 번져 있다.',visual:'rain'},
+ 'P-09':{app:'photos',title:'책상 위의 꽃',date:'10월 22일',body:'작은 꽃 한 송이를 유리병에 꽂아 두었다.',visual:'flower'},
+ 'P-10':{app:'photos',title:'바닷가 방파제',date:'2016년 10월 24일',body:'바다를 향해 길게 뻗은 방파제. 사진 한쪽에 누군가의 운동화 끝이 찍혀 있다.',visual:'sea'},
+ 'P-11':{app:'photos',title:'수평선',date:'2016년 10월 24일',body:'해가 지기 직전의 바다. 사진의 촬영 위치가 P-10과 거의 같다.',visual:'horizon'},
+ 'P-12':{app:'photos',title:'바다 앞 벤치',date:'2026년 10월 24일',body:'비어 있는 벤치와 바다. 사진은 해가 진 뒤 촬영되었다.',visual:'bench'},
+ 'P-13':{app:'photos',title:'사진 뒷면',date:'오래된 사진',body:'우리의 마지막 여름.<br><br>그때는 몰랐다. 네가 내게 얼마나 특별한 사람이었는지.<br>아니, 사실 알고 있었을지도 모른다.',visual:'oldphoto'},
+ 'C-08':{app:'calendar',title:'10월 8일',date:'장보기',body:'오후 5:30 · 마트에 들르기'},
+ 'C-10':{app:'calendar',title:'10월 10일',date:'방 청소',body:'오후 2:00 · 방 정리하기'},
+ 'C-12':{app:'calendar',title:'10월 12일',date:'개인 일정',body:'읽던 책 마저 읽기'},
+ 'C-24':{app:'calendar',title:'10월 24일',date:'기억해야 할 날',body:'2016년 10월 24일<br><br>바닷가. 우리 둘의 약속.<br><br>10년 뒤에 다시 만나기로 했다.'},
+ 'C-2026':{app:'calendar',title:'10월 24일',date:'2026년 10월 24일',body:'오후 4:20 · 바닷가<br><br>오후 6:10 · 해가 질 때까지 기다리기<br><br><span class="subtext">완료 표시가 되어 있지 않습니다.</span>'},
+ 'S-01':{app:'browser',title:'이번 주말 날씨',date:'10월 22일',body:'주말은 대체로 맑겠습니다.'},
+ 'S-02':{app:'browser',title:'따뜻한 차 추천',date:'10월 20일',body:'캐모마일, 얼그레이, 보이차.'},
+ 'S-03':{app:'browser',title:'동네 근처 조용한 서점',date:'10월 18일',body:'조용히 머물 수 있는 작은 서점들을 찾아보았다.'},
+ 'S-04':{app:'browser',title:'간단한 저녁 메뉴',date:'10월 16일',body:'오늘은 집에서 간단히 먹기로 했다.'},
+ 'S-05':{app:'browser',title:'가을에 걷기 좋은 산책길',date:'10월 13일',body:'집 근처 공원과 강변 산책로.'},
+ 'S-06':{app:'browser',title:'바다 근처 일몰 시간',date:'10월 9일',body:'해가 지는 시간과 바닷가 날씨를 확인했다.'},
+ 'S-07':{app:'browser',title:'2016년 10월 24일 무슨 요일이었지?',date:'10월 23일',body:'오래된 날짜를 다시 확인했다.'},
+ 'S-08':{app:'browser',title:'오래된 사진 날짜 확인하는 방법',date:'10월 23일',body:'사진의 촬영 날짜와 위치 정보를 확인하는 방법을 검색했다.'},
+ 'V-02':{app:'voice',title:'녹음 002',date:'11월 2일 · 01:04',body:'(작게 숨을 고르는 소리)<br><br>오랜만에 네 이름을 소리 내서 불러 봤어. 이상하지. 아직도 어색하지가 않아.'},
+ 'V-FINAL':{app:'voice',title:'너에게',date:'11월 3일 · 00:18',body:'그때는 네가 나를 어떻게 생각하는지 궁금했어. 나도 내 마음을 잘 몰랐던 것 같아. 아니, 어쩌면 알고 있었는데 모르는 척했던 걸지도 모르지.<br><br>나는 네가 좋았어. 친구라는 말로 설명하기에는 조금 더 특별하게.<br><br>그때 네가 나와 같은 마음이었는지는 아직도 모르겠어. 그래도 한 가지는 확실히 말할 수 있어.<br><br><strong>나는 너를 사랑했어.</strong><br><br>그 말을 조금 더 일찍 했으면 좋았을 텐데.'},
+ 'F-01':{app:'files',title:'진료 기록 요약',date:'2025년 6월 · 최근 수정 11월 1일',body:'장기간 치료 및 경과 관찰이 필요한 상태.<br><br>최근 기록에서 일상 활동의 제한과 치료 일정의 증가가 확인됩니다.<br><br><span class="subtext">개인 의료 정보가 포함된 문서입니다.</span>'},
+ 'F-02':{app:'files',title:'진료 일정 기록',date:'2026년 10월',body:'10월 7일 · 병원<br>10월 14일 · 병원<br>10월 21일 · 병원<br>10월 28일 · 병원<br><br>일정 사이에 개인 일정이 비어 있습니다.'},
+ 'F-03':{app:'files',title:'LAST_RECORD',date:'11월 3일',body:'이 기록을 읽는 사람이 너였으면 좋겠다고 생각했어.<br><br>하지만 네가 아니어도 괜찮아. 그저 이 마음이 어디에도 닿지 못한 채 사라지지는 않았으면 했어.'},
+ 'CALL-01':{app:'phone',title:'최근 통화',date:'11월 3일',body:'알 수 없는 번호 · 부재중<br>발신 번호 없음 · 2분 41초<br>알 수 없는 번호 · 부재중'},
+ 'CALL-02':{app:'phone',title:'연락 기록',date:'11월 2일',body:'연락처 검색: 즐겨찾기 목록<br>통화 시도: 취소됨<br><br>상대방에게 연결되지 않았습니다.'},
+ 'M-OLD-LOCK':{app:'messages',title:'오래된 대화',date:'2016년',body:'잠긴 대화방입니다.'}
+};
+const appNames={messages:'메시지',phone:'전화',photos:'사진',calendar:'캘린더',notes:'메모',browser:'Safari',voice:'음성 메모',files:'파일'};
+const visualStyles={
+ cafe:'linear-gradient(145deg,#b78b6a,#59483e 55%,#272b32)',
+ desk:'linear-gradient(145deg,#c2a47d,#66513d 55%,#24272e)',
+ street:'linear-gradient(145deg,#aab2b8,#68717a 55%,#30353d)',
+ sky:'linear-gradient(180deg,#8995a5,#c2b8ae 55%,#59616d)',
+ book:'linear-gradient(145deg,#bda88d,#645b50 55%,#252932)',
+ food:'linear-gradient(145deg,#b58c70,#605044 55%,#252932)',
+ sunset:'linear-gradient(180deg,#4e5369,#bd806d 55%,#272b37)',
+ rain:'linear-gradient(180deg,#6b7480,#343c47 60%,#171b21)',
+ flower:'linear-gradient(145deg,#c7b4a2,#6c6b60 55%,#252932)',
+ sea:'linear-gradient(180deg,#a2a9b0 0%,#657d8c 38%,#294354 39%,#172b3b 100%)',
+ horizon:'linear-gradient(180deg,#d0a58c 0%,#8b7780 38%,#476273 39%,#182f43 100%)',
+ bench:'linear-gradient(180deg,#777d85 0%,#506575 43%,#1c3547 44%,#111d29 100%)',
+ oldphoto:'linear-gradient(145deg,#d1b99a,#82715e 55%,#38312c)'
+};
+function activeQuest(){
+ const all=chapters.flatMap(c=>c.quests);
+ return all.find(q=>!story.completed.has(q.id))||null;
+}
+function currentChapterIndex(){
+ for(let i=0;i<chapters.length;i++) if(chapters[i].quests.some(q=>!story.completed.has(q.id))) return i;
+ return chapters.length-1;
+}
+function isUnlocked(id){return story.unlocked.has(id);}
+function markInspected(id){
+ if(!story.inspected.has(id)){story.inspected.add(id);renderQuestPanel();}
+}
+function recordCard(id){
+ const r=records[id]; if(!r)return '';
+ const locked=!isUnlocked(id);
+ return `<div class="card row record-card" ${locked?`onclick="showToast('아직 열 수 없는 기록입니다.')"`:`onclick="openRecord('${id}')"`}>
+ <div class="record-icon">${locked?'🔒':(r.app==='photos'?'▧':r.app==='notes'?'≡':r.app==='messages'?'…':r.app==='calendar'?'▦':r.app==='voice'?'♫':r.app==='files'?'▤':'⌕')}</div>
+ <div class="record-info"><div class="item-title">${locked?'잠긴 기록':r.title}</div><div class="item-sub">${r.date}</div></div><span class="chevron">›</span></div>`;
+}
+function renderRecord(id){
+ const r=records[id]; if(!r)return;
+ const visual=r.visual?`<div class="photo-art" style="background:${visualStyles[r.visual]}"><span>${r.visual==='sea'||r.visual==='horizon'||r.visual==='bench'?'': ' '}</span></div>`:'';
+ const body=r.app==='notes'?`<div class="note-paper">${r.body}</div>`:`<div class="card record-body">${r.body}</div>`;
+ $('appTitle').textContent=r.title;$('appAction').textContent=r.date;
+ $('appBody').innerHTML=`<button class="secondary-btn" onclick="openApp('${r.app}')">‹ ${appNames[r.app]} 목록으로</button>${visual}${body}<p class="subtext" style="margin-top:18px">기록 ID · ${id}</p>`;
+ $('appView').scrollTop=0;
+ markInspected(id);
+}
+function openRecord(id){if(!isUnlocked(id)){showToast('아직 열 수 없는 기록입니다.');return;}renderRecord(id);}
+function openApp(name){
+ const title=appNames[name]; if(!title)return;
+ $('appTitle').textContent=title;$('appAction').textContent='';
+ const ids=Object.keys(records).filter(id=>records[id].app===name);
+ let intro={messages:'휴대폰에 남아 있는 대화입니다.',phone:'최근 통화와 연락 시도의 흔적입니다.',photos:'평범한 하루와 오래된 장소가 담겨 있습니다.',calendar:'기록된 일정과 잊지 못한 날짜입니다.',notes:'하루의 생각을 적어 둔 메모입니다.',browser:'최근 검색 기록입니다.',voice:'저장된 음성 메모입니다.',files:'휴대폰에 남겨진 문서입니다.'}[name];
+ let content=`<div class="eyebrow">LAST DEVICE · ${title.toUpperCase()}</div><h2 class="section-title">${title}</h2><p class="subtext">${intro}</p>`;
+ if(name==='messages'){
+   content+=`<div class="card row" onclick="openRecord('M-FAMILY')"><div class="avatar">가</div><div><div class="item-title">가족</div><div class="item-sub">오늘 저녁은 먹었어?</div></div><span class="chevron">›</span></div>
+   <div class="card row" onclick="openRecord('M-FRIEND')"><div class="avatar">친</div><div><div class="item-title">친구</div><div class="item-sub">이번 주말에 밥 먹을래?</div></div><span class="chevron">›</span></div>
+   <div class="card row" onclick="openRecord('M-NEIGHBOR')"><div class="avatar">동</div><div><div class="item-title">동네 친구</div><div class="item-sub">전에 말한 빵집 가 봤어?</div></div><span class="chevron">›</span></div>
+   ${recordCard('M-OLD-LOCK')}${recordCard('M-OLD')}${recordCard('M-DRAFT')}`;
+ } else if(name==='photos'){
+   content+=`<div class="photo-grid">${ids.map(id=>{const r=records[id],locked=!isUnlocked(id);return `<button class="photo-tile" onclick="${locked?`showToast('아직 열 수 없는 사진입니다.')`:`openRecord('${id}')`}" style="background:${locked?'#252933':visualStyles[r.visual]}"><span>${locked?'🔒':r.title}</span><small>${r.date}</small></button>`}).join('')}</div>`;
+ } else {
+   content+=ids.map(id=>recordCard(id)).join('');
+ }
+ content+=`<div class="quest-panel" id="questPanel"></div>`;
+ $('appBody').innerHTML=content;$('appView').scrollTop=0;renderQuestPanel();
+ showView('appView');currentView='app';
+}
+function renderQuestPanel(){
+ const q=activeQuest(); if(!q)return;
+ const ready=q.need.every(id=>story.inspected.has(id));
+ const idx=currentChapterIndex(),ch=chapters[idx];
+ const panel=$('questPanel'); if(!panel)return;
+ panel.innerHTML=`<div class="quest-box"><div class="eyebrow">${ch.name} · 진행 중</div><h3>${q.title}</h3><p>${q.desc}</p><div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div><button class="primary-btn" ${ready?'':'disabled'} onclick="completeQuest('${q.id}')">${ready?'퀘스트 완료':'필요한 기록을 먼저 확인하세요'}</button></div>`;
+}
+function completeQuest(id){
+ const q=chapters.flatMap(c=>c.quests).find(x=>x.id===id); if(!q||q.need.some(x=>!story.inspected.has(x)))return;
+ story.completed.add(id);q.unlock.forEach(x=>story.unlocked.add(x));
+ const ch=chapters[currentChapterIndex()];
+ showToast('기록이 연결되었습니다.');
+ const next=activeQuest();
+ setTimeout(()=>{
+  $('appTitle').textContent='기록 업데이트';
+  $('appBody').innerHTML=`<div class="eyebrow">QUEST COMPLETE</div><h2 class="section-title">${q.title}</h2><div class="card record-body">${q.done}</div><div class="card"><div class="item-title">새로운 기록이 열렸습니다.</div><div class="item-sub">${q.unlock.map(x=>records[x]?.title||x).join(' · ')||'모든 기록을 확인했습니다.'}</div></div><button class="primary-btn" onclick="goHome()">홈 화면으로</button>${next?`<div class="quest-box"><div class="eyebrow">${chapters[currentChapterIndex()].name}</div><h3>다음 퀘스트</h3><p>${next.title} · ${next.desc}</p></div>`:`<div class="card">모든 이야기가 끝났습니다.</div>`}`;
+ },250);
+}
+function renderQuestApp(){
+ const q=activeQuest(),idx=currentChapterIndex(),ch=chapters[idx];
+ $('appTitle').textContent='진행 상황';$('appAction').textContent='LAST DEVICE';
+ $('appBody').innerHTML=`<div class="eyebrow">${ch.name}</div><h2 class="section-title">${ch.title}</h2><p class="subtext">${ch.desc}</p><div class="quest-box"><div class="eyebrow">CURRENT QUEST</div><h3>${q?.title||'모든 기록 확인 완료'}</h3><p>${q?.desc||'이야기가 끝났습니다.'}</p>${q?`<div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div>`:''}</div><h3 style="margin-top:24px">퀘스트 기록</h3>${chapters.map(c=>`<div class="card"><div class="item-title">${c.name} · ${c.title}</div><div class="item-sub">${c.quests.map(x=>(story.completed.has(x.id)?'✓ ':'○ ')+x.title).join('<br>')}</div></div>`).join('')}`;
+ showView('appView');currentView='app';
+}
+function goHome(){showView('homeView');currentView='home';}
+function showToast(message){
+ const t=$('toast');t.textContent=message;t.classList.add('show');
+ clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100);
+}
+
 const slideControl = $('slideUnlock');
 const slideThumb = $('slideThumb');
 const slideFill = $('slideFill');
