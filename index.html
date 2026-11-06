@@ -199,12 +199,6 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .conversation-bottomline b{font-size:20px;font-weight:300;color:#646a75}
 .unread-dot{position:absolute;right:1px;top:39px;width:7px;height:7px;border-radius:50%;background:#3194ff}
 .messages-footer{text-align:center;font-size:10px;color:#777d88;padding:18px 0}
-.chat-top{height:66px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2c33;margin:-20px -18px 0;padding:0 14px;background:#17191f}
-.chat-back,.chat-info{background:none;border:0;color:#58a5ff;font-size:25px;width:32px}
-.chat-contact{display:flex;flex-direction:column;align-items:center;gap:2px}
-.chat-avatar{width:29px;height:29px;border-radius:50%;background:linear-gradient(145deg,#697487,#38404c);display:grid;place-items:center;font-size:12px}
-.chat-contact strong{font-size:12px}
-.chat-contact span{font-size:9px;color:#8f96a2}
 .chat-date{text-align:center;color:#8d929c;font-size:10px;margin:20px 0}
 .chat-thread{display:flex;flex-direction:column;gap:4px;padding:0 2px 16px}
 .chat-day{text-align:center;color:#858b96;font-size:10px;margin:13px 0}
@@ -528,7 +522,7 @@ function renderMessageThread(id){
   if(m[0]==='deleted')return `<div class="chat-row mine"><div class="chat-bubble deleted">${m[1]}</div><span class="chat-time">${m[2]||''}</span></div>`;
   return `<div class="chat-row ${m[0]==='out'?'mine':''}"><div class="chat-bubble ${m[0]==='out'?'outgoing':'incoming'}">${m[1]}</div><span class="chat-time">${m[2]||''}</span></div>`;
  }).join('');
- $('appBody').innerHTML=`<div class="chat-top"><button class="chat-back" onclick="openApp('messages')">‹</button><div class="chat-contact"><div class="chat-avatar">${d.initial||'↗'}</div><strong>${d.name}</strong><span>정보 ⌄</span></div><button class="chat-info" onclick="showToast('연락처 정보가 없습니다.')">ⓘ</button></div><div class="chat-date">${d.date}</div><div class="chat-thread">${bubbles}</div><div class="chat-compose"><button class="compose-plus" onclick="showToast('읽기 전용 대화입니다.')">＋</button><div class="compose-placeholder">iMessage</div><button class="compose-send" onclick="showToast('이 대화는 읽기 전용입니다.')">↑</button></div><p class="chat-record-id">기록 ID · ${id}</p>`;
+ $('appBody').innerHTML=`<div class="chat-date">${d.date}</div><div class="chat-thread">${bubbles}</div><div class="chat-compose"><button class="compose-plus" onclick="showToast('읽기 전용 대화입니다.')">＋</button><div class="compose-placeholder">iMessage</div><button class="compose-send" onclick="showToast('이 대화는 읽기 전용입니다.')">↑</button></div><p class="chat-record-id">기록 ID · ${id}</p>`;
  $('appBody').scrollTop=0;
  markInspected(id);
 }
