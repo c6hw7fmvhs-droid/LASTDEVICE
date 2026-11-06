@@ -216,6 +216,23 @@ button{font:inherit;color:inherit;border:0;cursor:pointer}
 .compose-send{width:25px;height:25px;border-radius:50%;background:#087df1;border:0;color:white;font-size:15px}
 .chat-record-id{font-size:9px;color:#6f7682;margin:27px 0 0}
 
+
+.puzzle-question{margin-top:18px;padding-top:16px;border-top:1px solid #ffffff18}
+.puzzle-label{font-size:10px;letter-spacing:1.4px;color:#8fa5c3;font-weight:700}
+.puzzle-question>p{font-size:14px;line-height:1.75;color:#eef1f5;margin:9px 0 14px}
+.puzzle-answer{width:100%;box-sizing:border-box;background:#11151c;border:1px solid #495362;border-radius:12px;padding:14px;color:#f4f6f9;font-size:14px;outline:none}
+.puzzle-answer:focus{border-color:#6c9edc}
+.puzzle-answer:disabled{opacity:.65}
+.puzzle-answer.wrong-answer{border-color:#d66b6b;animation:shake .22s linear 2}
+.puzzle-actions{display:flex;gap:9px;align-items:center}
+.puzzle-actions .primary-btn{flex:1}
+.hint-btn{margin-top:15px;background:#303743;border:1px solid #596271;border-radius:12px;padding:13px 15px;color:#dbe2ec;font-size:12px}
+.puzzle-hint{margin-top:12px;padding:12px;border-radius:10px;background:#272e39;color:#c6d0df;font-size:12px;line-height:1.6}
+.puzzle-success{margin-top:14px;padding:12px;border-radius:11px;background:#20352d;color:#bfe0ca;font-size:12px;line-height:1.7}
+.puzzle-success .primary-btn{background:#dce4f0;color:#151a22}
+.puzzle-wait{margin-top:16px;padding:13px;border-radius:11px;background:#262c36;color:#aeb9c8;font-size:12px;line-height:1.65}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
 </style>
 </head>
 <body>
@@ -370,37 +387,38 @@ const apps={
 const story = {
   chapter:0,
   completed:new Set(),
+  solved:new Set(),
   inspected:new Set(),
   unlocked:new Set(['N-01','N-02','N-03','N-04','N-05','N-06','M-FAMILY','M-FRIEND','M-NEIGHBOR','P-01','P-02','P-03','P-04','P-05','P-06','P-07','P-08','P-09','C-08','C-10','C-12','S-01','S-02','S-03','S-04','S-05','S-06','V-01','F-01']),
   finalUnlocked:false
 };
 const chapters = [
  {name:'PROLOGUE',title:'AN UNKNOWN DEVICE',desc:'처음 보는 휴대폰의 기록을 살펴보세요.',quests:[
-  {id:'P-01',title:'처음 보는 휴대폰',desc:'사진, 메모, 캘린더에서 기록을 하나씩 확인하세요.',need:['P-01','N-01','C-08'],unlock:['N-09'],done:'휴대폰 주인은 평범한 일상을 꼼꼼하게 기록하는 사람이었던 것 같습니다. 사소한 하루의 흔적 사이에 오래된 기억이 섞여 있습니다.'}
+  {id:'P-01',title:'처음 보는 휴대폰',desc:'사진, 메모, 캘린더에서 기록을 하나씩 확인하세요.',puzzle:{"kind":"추론형","question":"사진, 메모, 캘린더를 함께 살펴보세요. 세 기록에서 공통적으로 드러나는 서윤의 생활 방식은 무엇인가요?","answer":"일상","accept":["일상생활","평범한 일상"],"hint":"특별한 사건보다 장보기, 할 일, 작은 발견처럼 매일의 일을 기록하고 있어요.","explain":"서윤은 특별한 일뿐 아니라 평범한 하루까지 기록하는 사람이었습니다."},need:['P-01','N-01','C-08'],unlock:['N-09'],done:'휴대폰 주인은 평범한 일상을 꼼꼼하게 기록하는 사람이었던 것 같습니다. 사소한 하루의 흔적 사이에 오래된 기억이 섞여 있습니다.'}
  ]},
  {name:'CHAPTER 01',title:'남겨진 기록',desc:'기록 속에서 휴대폰 주인의 일상을 살펴보세요.',quests:[
-  {id:'01-01',title:'작은 습관',desc:'메모 세 개를 읽고 반복되는 습관을 찾아보세요.',need:['N-01','N-02','N-04'],unlock:['N-09','P-10'],done:'누군가의 말을 기억해 두는 습관. 이 사람은 사소한 것을 쉽게 흘려보내지 않았습니다.'},
-  {id:'01-02',title:'익숙한 이름',desc:'메시지 목록과 통화 기록을 살펴보세요.',need:['M-FAMILY','M-FRIEND','M-NEIGHBOR','CALL-01'],unlock:['M-OLD-LOCK','M-OLD'],done:'오래전 대화가 남아 있는 대화방을 발견했습니다. 마지막 기록은 2016년 10월입니다.'},
-  {id:'01-03',title:'오래된 대화',desc:'잠긴 대화방을 열 암호를 찾아보세요.',need:['M-OLD'],unlock:['P-11','C-24','S-07'],done:'2016년 10월 24일. 두 사람은 그날 함께 바닷가에 갔습니다. “다음에도 꼭 같이 오자”는 약속이 남아 있습니다.'}
+  {id:'01-01',title:'작은 습관',desc:'메모 세 개를 읽고 반복되는 습관을 찾아보세요.',puzzle:{"kind":"기록 대조형","question":"N-04에는 다음 주에 미루지 말아야 할 일이 적혀 있습니다. 서윤이 하려고 했던 행동은 무엇인가요?","answer":"연락","accept":["연락하기","연락을 하기"],"hint":"메모에는 '전에 이야기했던 것도 물어보기'라는 문장이 있어요.","explain":"서윤은 누군가에게 연락하는 일을 계속 미루고 있었습니다."},need:['N-01','N-02','N-04'],unlock:['N-09','P-10'],done:'누군가의 말을 기억해 두는 습관. 이 사람은 사소한 것을 쉽게 흘려보내지 않았습니다.'},
+  {id:'01-02',title:'익숙한 이름',desc:'메시지 목록과 통화 기록을 살펴보세요.',puzzle:{"kind":"기록 추적형","question":"메시지와 통화 기록을 비교해 보세요. 목록에서 발견한 가장 오래된 대화는 몇 년도의 기록인가요?","answer":"2016","accept":["2016년"],"hint":"오래된 대화방의 날짜 표시를 확인해 보세요.","explain":"2016년에 시작된 대화가 아직 휴대폰에 남아 있습니다."},need:['M-FAMILY','M-FRIEND','M-NEIGHBOR','CALL-01'],unlock:['M-OLD-LOCK','M-OLD'],done:'오래전 대화가 남아 있는 대화방을 발견했습니다. 마지막 기록은 2016년 10월입니다.'},
+  {id:'01-03',title:'오래된 대화',desc:'잠긴 대화방을 열 암호를 찾아보세요.',puzzle:{"kind":"암호 해독형","question":"오래된 대화가 시작된 날짜를 확인하세요. 월과 일을 네 자리 숫자로 입력하면 대화 기록이 더 열립니다.","answer":"1024","accept":["10월24일","10/24"],"hint":"대화 날짜는 2016년 10월 24일입니다. 연도는 제외하세요.","explain":"대화방을 열었던 날짜인 10월 24일이 암호였습니다."},need:['M-OLD'],unlock:['P-11','C-24','S-07'],done:'2016년 10월 24일. 두 사람은 그날 함께 바닷가에 갔습니다. “다음에도 꼭 같이 오자”는 약속이 남아 있습니다.'}
  ]},
  {name:'CHAPTER 02',title:'오래된 날짜',desc:'반복해서 등장하는 장소와 날짜를 연결하세요.',quests:[
-  {id:'02-01',title:'반복되는 장소',desc:'사진 속 풍경을 살펴보고 공통된 장소를 찾아보세요.',need:['P-10','P-11'],unlock:['P-12','S-08'],done:'사진 속 장소는 같은 바닷가입니다. 여러 해가 지났는데도 같은 방향에서 바다를 찍었습니다.'},
-  {id:'02-02',title:'잊히지 않는 날짜',desc:'캘린더의 잠긴 날짜를 확인하세요.',need:['C-24'],unlock:['N-07'],done:'10월 24일은 두 사람이 다시 만나기로 약속한 날이었습니다.'},
-  {id:'02-03',title:'10년 전의 약속',desc:'사진과 메모, 검색 기록을 함께 확인하세요.',need:['N-07','S-07','S-08','P-12'],unlock:['C-2026','M-OLD-2'],done:'약속한 날은 2026년 10월 24일. 휴대폰 주인은 그날 바닷가에 다녀왔습니다.'}
+  {id:'02-01',title:'반복되는 장소',desc:'사진 속 풍경을 살펴보고 공통된 장소를 찾아보세요.',puzzle:{"kind":"장소 추론형","question":"P-10과 P-11의 풍경을 비교하세요. 두 사진에 공통으로 담긴 장소는 어디인가요?","answer":"방파제","accept":["바닷가 방파제","바다 방파제"],"hint":"P-10의 제목과 사진 속 길게 바다 쪽으로 뻗은 구조물을 살펴보세요.","explain":"두 사진은 같은 바닷가 방파제에서 촬영되었습니다."},need:['P-10','P-11'],unlock:['P-12','S-08'],done:'사진 속 장소는 같은 바닷가입니다. 여러 해가 지났는데도 같은 방향에서 바다를 찍었습니다.'},
+  {id:'02-02',title:'잊히지 않는 날짜',desc:'캘린더의 잠긴 날짜를 확인하세요.',puzzle:{"kind":"날짜 추론형","question":"캘린더의 과거 기록을 확인하세요. 두 사람이 다시 만나기로 약속한 날짜는 몇 월 며칠인가요?","answer":"1024","accept":["10월24일","10월 24일","10/24"],"hint":"캘린더에 표시된 날짜와 오래된 대화의 날짜가 같습니다.","explain":"두 사람은 10월 24일을 다시 만날 날로 정했습니다."},need:['C-24'],unlock:['N-07'],done:'10월 24일은 두 사람이 다시 만나기로 약속한 날이었습니다.'},
+  {id:'02-03',title:'10년 전의 약속',desc:'사진과 메모, 검색 기록을 함께 확인하세요.',puzzle:{"kind":"날짜 계산형","question":"약속은 2016년 10월 24일로부터 정확히 10년 뒤입니다. 주인공이 다시 찾아간 날짜를 YYYYMMDD 형식으로 입력하세요.","answer":"20261024","accept":["2026-10-24","2026년10월24일"],"hint":"연도에 10을 더하고 월과 일은 그대로 유지하세요.","explain":"주인공은 2026년 10월 24일, 약속한 날에 바닷가를 다시 찾았습니다."},need:['N-07','S-07','S-08','P-12'],unlock:['C-2026','M-OLD-2'],done:'약속한 날은 2026년 10월 24일. 휴대폰 주인은 그날 바닷가에 다녀왔습니다.'}
  ]},
  {name:'CHAPTER 03',title:'숨겨진 일상',desc:'평범한 기록에 남겨진 빈틈을 살펴보세요.',quests:[
-  {id:'03-01',title:'비어 있는 일정',desc:'최근 캘린더에서 반복되는 빈 일정을 확인하세요.',need:['C-2026'],unlock:['F-02'],done:'최근 일정에는 병원 방문으로 보이는 흔적이 반복됩니다.'},
-  {id:'03-02',title:'남겨진 문서',desc:'파일에 남겨진 문서를 확인하세요.',need:['F-02'],unlock:['N-08','CALL-02'],done:'휴대폰 주인은 오랫동안 치료를 받아 왔습니다. 기록은 최근 들어 급격히 줄어들었습니다.'},
-  {id:'03-03',title:'말하지 못한 이야기',desc:'메모와 통화 기록에서 연락을 망설인 흔적을 찾아보세요.',need:['N-08','CALL-02'],unlock:['M-DRAFT'],done:'그녀는 누군가에게 연락하려 했지만 끝내 보내지 못했습니다. 그 상대가 누구인지는 아직 알 수 없습니다.'}
+  {id:'03-01',title:'비어 있는 일정',desc:'최근 캘린더에서 반복되는 빈 일정을 확인하세요.',puzzle:{"kind":"시간 계산형","question":"2026년 10월 24일 일정에서 바닷가 도착은 오후 4시 20분, 기다리기는 오후 6시 10분까지입니다. 기다린 시간은 얼마인가요?","answer":"1시간50분","accept":["110분","1시간 50분","1:50"],"hint":"오후 4시 20분부터 5시 20분까지 1시간, 이후 50분입니다.","explain":"그녀는 바닷가에서 약 1시간 50분을 기다렸습니다."},need:['C-2026'],unlock:['F-02'],done:'최근 일정에는 병원 방문으로 보이는 흔적이 반복됩니다.'},
+  {id:'03-02',title:'남겨진 문서',desc:'파일에 남겨진 문서를 확인하세요.',puzzle:{"kind":"패턴 추론형","question":"진료 일정은 10월 7일, 14일, 21일, 28일입니다. 일정 사이의 간격은 며칠인가요?","answer":"7일","accept":["7","일주일","일주일간격"],"hint":"날짜가 매번 같은 간격으로 반복됩니다.","explain":"일정은 일주일 간격으로 반복되고 있었습니다."},need:['F-02'],unlock:['N-08','CALL-02'],done:'휴대폰 주인은 오랫동안 치료를 받아 왔습니다. 기록은 최근 들어 급격히 줄어들었습니다.'},
+  {id:'03-03',title:'말하지 못한 이야기',desc:'메모와 통화 기록에서 연락을 망설인 흔적을 찾아보세요.',puzzle:{"kind":"기록 교차형","question":"N-08의 메모와 CALL-02의 통화 기록을 함께 보세요. 서윤은 상대에게 무엇을 하려다 망설였나요?","answer":"연락","accept":["전화","전화하기","연락하기"],"hint":"메모에는 안부를 묻고 싶다는 말이, 통화 기록에는 취소된 시도가 남아 있습니다.","explain":"서윤은 누군가에게 연락하려 했지만 끝내 망설였습니다."},need:['N-08','CALL-02'],unlock:['M-DRAFT'],done:'그녀는 누군가에게 연락하려 했지만 끝내 보내지 못했습니다. 그 상대가 누구인지는 아직 알 수 없습니다.'}
  ]},
  {name:'CHAPTER 04',title:'보내지 못한 말',desc:'끝내 전하지 못한 마음에 가까워집니다.',quests:[
-  {id:'04-01',title:'작성 중인 메시지',desc:'보내지 않은 메시지 초안을 읽으세요.',need:['M-DRAFT'],unlock:['V-02'],done:'메시지에는 안부를 묻는 짧은 문장만 남아 있습니다. 지우고 다시 쓰기를 반복한 흔적이 있습니다.'},
-  {id:'04-02',title:'마지막 목소리',desc:'음성 메모에 남겨진 짧은 녹음을 확인하세요.',need:['V-02'],unlock:['P-13','V-FINAL-PART'],done:'녹음에는 오래된 사진을 찍던 날의 이야기가 담겨 있습니다. 두 사람은 친구라는 말로 서로를 설명했습니다.'},
-  {id:'04-03',title:'남겨진 사진',desc:'사진 뒷면의 기록과 오래된 사진을 확인하세요.',need:['P-13'],unlock:['V-FINAL','F-03'],done:'사진 속 두 사람 중 한 명은 기록을 읽고 있는 당신입니다. 그녀는 당신을 오래도록 특별하게 생각했습니다.'}
+  {id:'04-01',title:'작성 중인 메시지',desc:'보내지 않은 메시지 초안을 읽으세요.',puzzle:{"kind":"문장 복원형","question":"보내지 못한 메시지 초안의 첫 문장을 그대로 입력하세요.","answer":"잘 지내?","accept":["잘지내","잘 지내"],"hint":"임시 보관함의 첫 번째 말풍선을 확인하세요.","explain":"그녀가 보내려던 말은 짧은 안부 인사였습니다."},need:['M-DRAFT'],unlock:['V-02'],done:'메시지에는 안부를 묻는 짧은 문장만 남아 있습니다. 지우고 다시 쓰기를 반복한 흔적이 있습니다.'},
+  {id:'04-02',title:'마지막 목소리',desc:'음성 메모에 남겨진 짧은 녹음을 확인하세요.',puzzle:{"kind":"핵심 단어 추출형","question":"녹음 002에서 서윤이 오랜만에 소리 내어 불러 본 것은 무엇인가요?","answer":"이름","accept":["네 이름","이름을"],"hint":"녹음에는 '네 ___을 소리 내서 불러 봤어'라는 문장이 나옵니다.","explain":"그녀는 오랜만에 상대의 이름을 소리 내어 불러 보았습니다."},need:['V-02'],unlock:['P-13','V-FINAL-PART'],done:'녹음에는 오래된 사진을 찍던 날의 이야기가 담겨 있습니다. 두 사람은 친구라는 말로 서로를 설명했습니다.'},
+  {id:'04-03',title:'남겨진 사진',desc:'사진 뒷면의 기록과 오래된 사진을 확인하세요.',puzzle:{"kind":"문구 해독형","question":"사진 뒷면에 적힌 문장에서 서윤이 두 사람의 시간을 무엇이라고 불렀나요? 핵심 표현을 입력하세요.","answer":"마지막 여름","accept":["우리의 마지막 여름"],"hint":"사진 뒷면 첫 문장을 확인하세요.","explain":"사진에는 '우리의 마지막 여름'이라는 문장이 남아 있었습니다."},need:['P-13'],unlock:['V-FINAL','F-03'],done:'사진 속 두 사람 중 한 명은 기록을 읽고 있는 당신입니다. 그녀는 당신을 오래도록 특별하게 생각했습니다.'}
  ]},
  {name:'FINAL',title:'LAST DEVICE',desc:'마지막 기록을 열고 이야기를 마무리하세요.',quests:[
-  {id:'F-01',title:'너에게 남긴 기록',desc:'마지막 음성 메모를 재생하세요.',need:['V-FINAL'],unlock:['F-END'],done:'마지막 음성 메모가 복원되었습니다.'},
-  {id:'F-02',title:'마지막 약속',desc:'그녀가 남긴 마지막 말을 들으세요.',need:['F-END'],unlock:[],done:'기록을 모두 확인했습니다.'}
+  {id:'F-01',title:'너에게 남긴 기록',desc:'마지막 음성 메모를 재생하세요.',puzzle:{"kind":"감정 해석형","question":"마지막 음성 메모에서 서윤은 친구라는 말로 설명하기 어려웠던 자신의 감정을 어떤 말로 표현했나요?","answer":"사랑","accept":["사랑했어","사랑했다","사랑하는 마음"],"hint":"음성 메모의 마지막 부분을 다시 들어 보세요.","explain":"서윤은 마침내 자신의 감정을 사랑이라고 분명히 말했습니다."},need:['V-FINAL'],unlock:['F-END'],done:'마지막 음성 메모가 복원되었습니다.'},
+  {id:'F-02',title:'마지막 약속',desc:'그녀가 남긴 마지막 말을 들으세요.',puzzle:{"kind":"마지막 추론형","question":"마지막 기록과 오래된 약속을 연결해 보세요. 두 사람이 다시 만나기로 했던 장소는 어디인가요?","answer":"바닷가","accept":["바다","바닷가 방파제","방파제"],"hint":"2016년의 약속과 2026년의 캘린더 기록을 함께 떠올려 보세요.","explain":"그들이 약속했던 장소는 함께 시간을 보냈던 바닷가였습니다."},need:['F-END'],unlock:[],done:'기록을 모두 확인했습니다.'}
  ]}
 ];
 const records = {
@@ -560,28 +578,64 @@ function filterMessageList(value){
  const q=(value||'').toLowerCase();
  document.querySelectorAll('.conversation-row').forEach(row=>{row.style.display=row.dataset.search.includes(q)?'flex':'none';});
 }
+
+function puzzleMarkup(q){
+ if(!q)return '';
+ const ready=q.need.every(id=>story.inspected.has(id));
+ const solved=story.solved.has(q.id);
+ const progress=q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('');
+ return `<div class="quest-box puzzle-box">
+ <div class="eyebrow">${q.puzzle?.kind||'PUZZLE'} · ${ready?'단서 확인 완료':'단서 수집 중'}</div>
+ <h3>${q.title}</h3><p>${q.desc}</p>
+ <div class="quest-progress">${progress}</div>
+ ${ready?`<div class="puzzle-question"><div class="puzzle-label">YOUR TASK</div><p>${q.puzzle.question}</p>
+ <input class="puzzle-answer" id="answer-${q.id}" type="text" placeholder="정답을 입력하세요" autocomplete="off" ${solved?'disabled':''}>
+ <div class="puzzle-actions"><button class="primary-btn" ${solved?'disabled':''} onclick="submitPuzzle('${q.id}')">${solved?'정답 확인 완료':'정답 제출'}</button><button class="hint-btn" onclick="toggleHint('${q.id}')">힌트 보기</button></div>
+ <div class="puzzle-hint" id="hint-${q.id}" hidden>${q.puzzle.hint}</div>
+ ${solved?`<div class="puzzle-success">✓ ${q.puzzle.explain}<button class="primary-btn" onclick="completeQuest('${q.id}')">기록 해제하기</button></div>`:''}
+ </div>`:`<div class="puzzle-wait">필요한 기록을 먼저 조사하세요. 기록을 확인한 뒤 이 화면으로 돌아오면 추리 문제가 열립니다.</div>`}
+ </div>`;
+}
 function renderQuestPanel(){
  const q=activeQuest(); if(!q)return;
- const ready=q.need.every(id=>story.inspected.has(id));
- const idx=currentChapterIndex(),ch=chapters[idx];
  const panel=$('questPanel'); if(!panel)return;
- panel.innerHTML=`<div class="quest-box"><div class="eyebrow">${ch.name} · 진행 중</div><h3>${q.title}</h3><p>${q.desc}</p><div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div><button class="primary-btn" ${ready?'':'disabled'} onclick="completeQuest('${q.id}')">${ready?'퀘스트 완료':'필요한 기록을 먼저 확인하세요'}</button></div>`;
+ panel.innerHTML=puzzleMarkup(q);
+}
+function toggleHint(id){
+ const el=$('hint-'+id);if(el)el.hidden=!el.hidden;
+}
+function normalizeAnswer(value){
+ return (value||'').toLowerCase().replace(/\s+/g,'').replace(/[.,!?·\-_/년월일]/g,'').trim();
+}
+function submitPuzzle(id){
+ const q=chapters.flatMap(c=>c.quests).find(x=>x.id===id);
+ if(!q||!q.puzzle)return;
+ if(!q.need.every(x=>story.inspected.has(x))){showToast('먼저 필요한 기록을 조사하세요.');return;}
+ const input=$('answer-'+id);const value=normalizeAnswer(input?.value);
+ const accepted=[q.puzzle.answer,...(q.puzzle.accept||[])].map(normalizeAnswer);
+ if(accepted.includes(value)){
+   story.solved.add(id);showToast('정답입니다. 기록을 해제할 수 있습니다.');renderQuestApp();
+ }else{
+   showToast('아직 정답이 아닙니다. 단서를 다시 살펴보세요.');
+   if(input){input.classList.add('wrong-answer');setTimeout(()=>input.classList.remove('wrong-answer'),650);}
+ }
 }
 function completeQuest(id){
- const q=chapters.flatMap(c=>c.quests).find(x=>x.id===id); if(!q||q.need.some(x=>!story.inspected.has(x)))return;
+ const q=chapters.flatMap(c=>c.quests).find(x=>x.id===id);
+ if(!q||!story.solved.has(id))return;
  story.completed.add(id);q.unlock.forEach(x=>story.unlocked.add(x));
- const ch=chapters[currentChapterIndex()];
- showToast('기록이 연결되었습니다.');
+ showToast('새로운 기록이 해제되었습니다.');
  const next=activeQuest();
  setTimeout(()=>{
   $('appTitle').textContent='기록 업데이트';
-  $('appBody').innerHTML=`<div class="eyebrow">QUEST COMPLETE</div><h2 class="section-title">${q.title}</h2><div class="card record-body">${q.done}</div><div class="card"><div class="item-title">새로운 기록이 열렸습니다.</div><div class="item-sub">${q.unlock.map(x=>records[x]?.title||x).join(' · ')||'모든 기록을 확인했습니다.'}</div></div><button class="primary-btn" onclick="goHome()">홈 화면으로</button>${next?`<div class="quest-box"><div class="eyebrow">${chapters[currentChapterIndex()].name}</div><h3>다음 퀘스트</h3><p>${next.title} · ${next.desc}</p></div>`:`<div class="card">모든 이야기가 끝났습니다.</div>`}`;
- },250);
+  $('appAction').textContent='';
+  $('appBody').innerHTML=`<div class="eyebrow">QUEST COMPLETE</div><h2 class="section-title">${q.title}</h2><div class="card record-body">${q.done}</div><div class="card"><div class="item-title">새로운 기록이 열렸습니다.</div><div class="item-sub">${q.unlock.map(x=>records[x]?.title||x).join(' · ')||'모든 기록을 확인했습니다.'}</div></div><button class="primary-btn" onclick="goHome()">홈 화면으로</button>${next?`<div class="quest-box"><div class="eyebrow">NEXT QUEST</div><h3>${next.title}</h3><p>${next.desc}</p></div>`:`<div class="card">모든 이야기가 끝났습니다.</div>`}`;
+ },180);
 }
 function renderQuestApp(){
  const q=activeQuest(),idx=currentChapterIndex(),ch=chapters[idx];
- $('appTitle').textContent='진행 상황';$('appAction').textContent='LAST DEVICE';
- $('appBody').innerHTML=`<div class="eyebrow">${ch.name}</div><h2 class="section-title">${ch.title}</h2><p class="subtext">${ch.desc}</p><div class="quest-box"><div class="eyebrow">CURRENT QUEST</div><h3>${q?.title||'모든 기록 확인 완료'}</h3><p>${q?.desc||'이야기가 끝났습니다.'}</p>${q?`<div class="quest-progress">${q.need.map(id=>`<span class="${story.inspected.has(id)?'checked':''}">${story.inspected.has(id)?'✓':'○'} ${records[id]?.title||id}</span>`).join('')}</div><button class="primary-btn" ${q.need.every(id=>story.inspected.has(id))?'':'disabled'} onclick="completeQuest('${q.id}')">${q.need.every(id=>story.inspected.has(id))?'퀘스트 완료':'필요한 기록을 먼저 확인하세요'}</button>`:''}</div>`;
+ $('appTitle').textContent='진행 중인 퀘스트';$('appAction').textContent='LAST DEVICE';
+ $('appBody').innerHTML=`<div class="eyebrow">${ch.name}</div><h2 class="section-title">${ch.title}</h2><p class="subtext">${ch.desc}</p>${q?puzzleMarkup(q):'<div class="card">모든 퀘스트를 완료했습니다.</div>'}`;
  showView('appView');currentView='app';
 }
 function goHome(){showView('homeView');currentView='home';}
